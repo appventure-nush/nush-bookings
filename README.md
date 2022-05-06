@@ -1,7 +1,7 @@
-# Hermes
-A Progressive App for Item Sharing. Made as part of NUSH HACK 2021.
+# Open House Booking System
+For NUSH Open House 2022.
 
-BY Team Sigma (Lee Jia Jie, Dave Tan Kai Xun, Prannaya Gupta)
+BY Lee Jia Jie, Dave Tan Kai Xun, Prannaya Gupta.
 
 ## Instructions
 
@@ -11,8 +11,6 @@ cd server
 npm i
 npm run serve
 ```
-
-To run this, you will need to download `windows-platform-tools` from NPM in Administrator mode.
 
 ### Run Client
 ```
