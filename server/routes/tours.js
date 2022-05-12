@@ -25,7 +25,6 @@ const app = firebaseApp.initializeApp(firebaseConfig);
 const db = firestore.getFirestore(app);
 
 
-
 /* GET list of tours */
 router.get('/', async function (req, res) {
     const querySnapshot = await firestore.getDocs(firestore.collection(db, "tours"));
@@ -42,20 +41,51 @@ router.get('/', async function (req, res) {
 
 /* GET a specific tour */
 router.get('/:id', async function (req, res) {
-    const docRef = firestore.doc(db, "tours", req.params.id);
-    console.log(req.params.id)
-    const docSnap = await firestore.getDoc(docRef);
-    
-    if (docSnap.exists()) {
-        console.log("Document data:", docSnap.data());
-        res.send(docSnap.data());
-    } else {
-      // doc.data() will be undefined in this case
-        console.log("No such document!");
-        res.send("No such tour!");
-    }
+  const docRef = firestore.doc(db, "tours", req.params.id);
+  const docSnap = await firestore.getDoc(docRef);
+  
+  if (docSnap.exists()) {
+      console.log("Document data:", docSnap.data());
+      res.send(docSnap.data());
+  } else {
+    // doc.data() will be undefined in this case
+      console.log("No such document!");
+      res.send("No such tour!");
+  }
+});
 
+
+
+/* PUT new participant */
+router.put('/:id', async function (req, res) {
+  const docRef = firestore.doc(db, "tours", req.params.id);
+  var newParticipant = {
+    "phone_no": req.body.phone_no,
+    "pax": req.body.pax,
+  }
+
+  await firestore.updateDoc(docRef, {
+    participants: firestore.arrayUnion(newParticipant)
   });
+
+  res.sendStatus(201);
+});
+
+
+/* DELETE a participant */
+router.delete('/:id', async function (req, res) {
+  const docRef = firestore.doc(db, "tours", req.params.id);
+  var participant = {
+    "phone_no": req.body.phone_no,
+    "pax": req.body.pax,
+  }
+
+  await firestore.updateDoc(docRef, {
+    participants: firestore.arrayRemove(participant)
+  });
+
+  res.sendStatus(200);
+});
 
   
 
