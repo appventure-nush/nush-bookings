@@ -27,19 +27,18 @@ const db = firestore.getFirestore(app);
 
 /* GET list of tours */
 router.get('/', async function (req, res) {
-    const querySnapshot = await firestore.getDocs(firestore.collection(db, "tours"));
-    var compliedData = [{}]
-    querySnapshot.forEach((doc) => {
-        console.log(`${doc.id} => ${doc.data()}`);
-        compliedData = compliedData.concat(doc._document.data.value.mapValue.fields)
-      });
-      
-    res.send(compliedData.slice(start=1))
+  const querySnapshot = await firestore.getDocs(firestore.collection(db, "tours"));
+  var compliedData = [{}];
+  querySnapshot.forEach((doc) => {
+      console.log(`${doc.id} => ${doc.data()}`);
+      compliedData = compliedData.concat(doc._document.data.value.mapValue.fields)
+    });
+    
+  res.send(compliedData.slice(start=1))
 
-  });
+});
 
-
-/* GET a specific tour */
+/* GET a specific tour by ID*/
 router.get('/:id', async function (req, res) {
   const docRef = firestore.doc(db, "tours", req.params.id);
   const docSnap = await firestore.getDoc(docRef);
@@ -55,6 +54,25 @@ router.get('/:id', async function (req, res) {
 });
 
 
+
+/* GET tours by TIMING */
+router.get('/time/:time', async function (req, res) {
+  const docRef = firestore.collection(db, "tours");
+  // res.send(compliedData.slice(start=1));
+  const q = firestore.query(docRef, firestore.where("time", "==", req.params.time));
+  const querySnapshot = await firestore.getDocs(q);
+  
+  var compliedData = [{}];
+  querySnapshot.forEach((doc) => {
+      console.log(`${doc.id} => ${doc.data()}`);
+      compliedData = compliedData.concat(doc._document.data.value.mapValue.fields)
+    });
+    
+  res.send(compliedData.slice(start=1))
+
+  
+
+});
 
 /* PUT new participant */
 router.put('/:id', async function (req, res) {
