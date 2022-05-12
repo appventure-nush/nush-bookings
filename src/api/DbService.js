@@ -36,7 +36,7 @@ export default{
     /* GET a specific tour by ID*/
     // router.get('/:id', async function (req, res) {
     async getTour(tour_id){
-    const docRef = firestore.doc(db, "tours", req.params.id);
+    const docRef = firestore.doc(db, "tours", tour_id);
     const docSnap = await firestore.getDoc(docRef);
     
     if (docSnap.exists()) {
@@ -47,17 +47,17 @@ export default{
     }
     else{
         console.log("No such document!");
-        res.send("No such tour!");
+        // res.send("No such tour!");
     }
     },
 
 
     /* GET tours by TIMING */
     // router.get('/time/:time', async function (req, res) {
-    async getTourByTime(){
+    async getTourByTime(time){
     const docRef = firestore.collection(db, "tours");
     // res.send(compliedData.slice(start=1));
-    const q = firestore.query(docRef, firestore.where("time", "==", req.params.time));
+    const q = firestore.query(docRef, firestore.where("time", "==", time));
     const querySnapshot = await firestore.getDocs(q);
     
     var compliedData = [{}];
@@ -72,8 +72,8 @@ export default{
 
     /* PUT new participant */
     // router.put('/:id', async function (req, res) {
-    async addParticipant(phone_no, pax){
-    const docRef = firestore.doc(db, "tours", req.params.id);
+    async addParticipant(tour_id, phone_no, pax){
+    const docRef = firestore.doc(db, "tours", tour_id);
     var newParticipant = {
         "phone_no": phone_no,
         "pax": pax,
@@ -89,8 +89,8 @@ export default{
 
     /* DELETE a participant */
     // router.delete('/:id', async function (req, res) {
-    async deleteParticipant(phone_no, pax){
-        const docRef = firestore.doc(db, "tours", req.params.id);
+    async deleteParticipant(tour_id, phone_no, pax){
+        const docRef = firestore.doc(db, "tours", tour_id);
         var participant = {
             "phone_no": phone_no,
             "pax": pax,
@@ -101,5 +101,46 @@ export default{
         });
 
         // res.sendStatus(200);
+    },
+
+    async reinitialiseTours(){
+        const morningTimings = [900, 910, 920, 930, 940, 950, 1000, 1010, 1020, 1030, 1040, 1050, 1100, 1100];
+        const count = morningTimings.length;
+        
+        const morningRoutes = ["A", "B1", "B2", "C1", "C2", "D1", "D2"];
+        const routeCount = morningRoutes.length;
+        
+        for (let i = 0; i < count; i++){
+            for (let j = 0; j < routeCount; j++){
+            const tour_id = morningTimings[i] + "_" + morningRoutes[j];
+            await firestore.setDoc(firestore.doc(db, "tours", tour_id), {
+                time: morningTimings[i],
+                tour_id: tour_id,
+                route: morningRoutes[j],
+                participants: [],
+            });
+            }
+        }
+    
+        const afternoonTimings = [1120, 1130, 1140, 1150, 1200, 1210, 1220, 1230, 1240, 1250, 1300, 1310, 1320, 1330, 1340, 1350, 1400, 1410, 1420, 1430, 1440, 1450,
+        1500, 1510, 1520, 1530,];
+        const afternoonCount = afternoonTimings.length;
+        
+        const afternoonRoutes= ["A1", "A2", "B1", "B2", "C1", "C2", "D1", "D2"];
+        const aftRouteCount = afternoonRoutes.length;
+        
+        for (let i = 0; i < afternoonCount; i++){
+            for (let j = 0; j < aftRouteCount; j++){
+            const tour_id = afternoonTimings[i] + "_" + afternoonRoutes[j];
+            await firestore.setDoc(firestore.doc(db, "tours", tour_id), {
+                time: afternoonTimings[i],
+                tour_id: tour_id,
+                route: afternoonRoutes[j],
+                participants: [],
+            });
+            }
+        }
+    
+        
     },
 };
