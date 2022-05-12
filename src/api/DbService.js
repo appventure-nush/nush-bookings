@@ -16,8 +16,6 @@ const firebaseConfig = {
   };
 
 
-
-
 export default{
 /* GET list of tours */
 // router.get('/', async function (req, res) {
@@ -104,7 +102,7 @@ export default{
     },
 
     async reinitialiseTours(){
-        const morningTimings = [900, 910, 920, 930, 940, 950, 1000, 1010, 1020, 1030, 1040, 1050, 1100, 1100];
+        const morningTimings = [900, 910, 920, 930, 940, 950, 1000, 1010, 1020, 1030, 1040, 1050, 1100, 1110];
         const count = morningTimings.length;
         
         const morningRoutes = ["A", "B1", "B2", "C1", "C2", "D1", "D2"];
@@ -122,8 +120,9 @@ export default{
             }
         }
     
-        const afternoonTimings = [1120, 1130, 1140, 1150, 1200, 1210, 1220, 1230, 1240, 1250, 1300, 1310, 1320, 1330, 1340, 1350, 1400, 1410, 1420, 1430, 1440, 1450,
-        1500, 1510, 1520, 1530,];
+        const afternoonTimings = [1120, 1130, 1140, 1150, 1200, 1210, 1220, 1230, 1240, 1250, 
+            1300, 1310, 1320, 1330, 1340, 1350, 1400, 1410, 1420, 1430, 1440, 1450,
+            1500, 1510, 1520, 1530,];
         const afternoonCount = afternoonTimings.length;
         
         const afternoonRoutes= ["A1", "A2", "B1", "B2", "C1", "C2", "D1", "D2"];
