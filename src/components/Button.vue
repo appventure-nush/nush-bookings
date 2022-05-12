@@ -22,9 +22,19 @@ export default {
   display: grid;
   place-items: center;
   border-radius: 14px;
-  background-image: linear-gradient(45deg, #217ea2, #00a499);
   color: black;
   font-size: 20px;
   font-weight: 700;
+  user-select: none;
+  cursor: pointer;
+
+  background-image: linear-gradient(45deg, #3865a8, #00a499);
+  background-size: 200% 100%;
+  background-position: 100%;
+  transition: background-position 600ms;
+
+  &:active {
+    background-position: 0% 0%;
+  }
 }
 </style>
