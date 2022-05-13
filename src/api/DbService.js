@@ -68,6 +68,26 @@ export default{
     return(compliedData.slice(start=1));
     },
 
+    /* GET Tour ID by Participant */
+    async getTourbyParticipant(phone_no, pax){
+        const docRef = firestore.collection(db, "tours");
+        // res.send(compliedData.slice(start=1));
+        const q = firestore.query(docRef, firestore.where("participants", "arrayContains", {
+            "phone_no" : phone_no,
+            "pax" : pax,
+        }));
+        const querySnapshot = await firestore.getDocs(q);
+        
+        var compliedData = [{}];
+        querySnapshot.forEach((doc) => {
+            console.log(`${doc.id} => ${doc.data()}`);
+            compliedData = compliedData.concat(doc._document.data.value.mapValue.fields)
+            });
+            
+        // res.send(compliedData.slice(start=1))
+        return(compliedData.slice(start=1));
+    },
+
     /* PUT new participant */
     // router.put('/:id', async function (req, res) {
     async addParticipant(tour_id, phone_no, pax){
