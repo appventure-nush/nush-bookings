@@ -46,7 +46,7 @@ router.get('/:id', async function (req, res) {
   if (docSnap.exists()) {
       console.log("Document data:", docSnap.data());
       res.send(docSnap.data());
-  } else {
+    } else {
     // doc.data() will be undefined in this case
       console.log("No such document!");
       res.send("No such tour!");

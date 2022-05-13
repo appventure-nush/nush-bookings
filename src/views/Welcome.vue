@@ -44,7 +44,7 @@ export default {
     margin-right: 80px;
     font-size: 36px;
     font-weight: 700;
-    background-image: linear-gradient(45deg, #00a499, #006760);
+    background-image: linear-gradient(45deg, #00a499, #003f3b);
     background-size: 100%;
     background-clip: text;
     -webkit-background-clip: text;
