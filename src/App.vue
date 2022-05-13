@@ -34,4 +34,8 @@
   font-family: 'Avenir';
   /* line-height: 1.2; */
 }
+
+.spacer {
+  flex-grow: 1;
+}
 </style>
