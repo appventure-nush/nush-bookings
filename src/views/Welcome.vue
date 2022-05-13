@@ -13,11 +13,12 @@
       up for more than one timing.
     </p>
     <div style="height: 50px"></div>
-    <MyButton text="Sign up" />
+    <MyButton text="Sign up" @click="signUp" />
   </div>
 </template>
 
 <script>
+import { useRouter } from 'vue-router';
 import MyButton from '@/components/MyButton.vue';
 
 export default {
@@ -25,7 +26,11 @@ export default {
     MyButton,
   },
   setup() {
-    return {};
+    const router = useRouter();
+    function signUp() {
+      router.push('/select-timing');
+    }
+    return { signUp };
   },
 };
 </script>
