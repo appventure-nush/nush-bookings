@@ -1,7 +1,7 @@
 <template>
   <div class="select-timing">
     <h1>Choose a time</h1>
-    <h4 v-show="(afternoon = false)">Morning</h4>
+    <h4 v-show="afternoon == false">Morning</h4>
     <div class="grid">
       <TimingCard
         v-for="timing in morning_time_slot"
@@ -84,13 +84,19 @@ export default {
       for (var i = 0; i < fromDb.length; i++) {
         var obj = fromDb[i];
         var slotRemaining = 12;
-        for (var j = 0; j < obj.participants; j++) {
-          slotRemaining -= obj.participants[0].pax;
+        console.log(obj.participants.arrayValue.values);
+        if (typeof obj.participants.arrayValue.values !== 'undefined') {
+          for (var j = 0; j < obj.participants.arrayValue.values.length; j++) {
+            slotRemaining -=
+              obj.participants.arrayValue.values[j].mapValue.fields.pax
+                .integerValue;
+          }
         }
         time_route_slots.push({
           time: obj.time.integerValue,
           slots: slotRemaining,
         });
+        console.log(obj.time.integerValue + ' ' + slotRemaining);
       }
       var rawMorningTimings = [
         900, 910, 920, 930, 940, 950, 1000, 1010, 1020, 1030, 1040, 1050, 1100,
@@ -107,8 +113,8 @@ export default {
 
       var morningTimings = [];
       var afternoonTimings = [];
-
-      if ((current.getMonth() == 7) & (current.getDate() == 21)) {
+      console.log(current.getMonth() + ' ' + current.getDate());
+      if ((current.getMonth() == 4) & (current.getDate() == 21)) {
         if (current.getHours() > 12) {
           this.afternoon = true;
         }
