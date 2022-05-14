@@ -1,7 +1,7 @@
 <template>
   <div class="select-timing">
     <h1>Choose a time</h1>
-    <h4>Morning</h4>
+    <h4 v-show="(afternoon = false)">Morning</h4>
     <div class="grid">
       <TimingCard
         v-for="timing in morning_time_slot"
@@ -19,7 +19,7 @@
         v-for="timing in afternoon_time_slot"
         :key="timing"
         :timing="timing.time - 1200"
-        subtitle="12 left"
+        :subtitle="`${timing.slots} slots left`"
         :selected="timing === sel"
         @click="sel = timing"
       />
@@ -61,6 +61,7 @@ export default {
           slots: 8,
         },
       ],
+      afternoon: false,
     };
   },
   setup() {
@@ -86,21 +87,48 @@ export default {
         for (var j = 0; j < obj.participants; j++) {
           slotRemaining -= obj.participants[0].pax;
         }
-        console.log(obj.time);
         time_route_slots.push({
           time: obj.time.integerValue,
           slots: slotRemaining,
         });
       }
-      var morningTimings = [
+      var rawMorningTimings = [
         900, 910, 920, 930, 940, 950, 1000, 1010, 1020, 1030, 1040, 1050, 1100,
         1110, 1120, 1130, 1140, 1150,
       ];
 
-      var afternoonTimings = [
+      var rawAfternoonTimings = [
         1200, 1210, 1220, 1230, 1240, 1250, 1300, 1310, 1320, 1330, 1340, 1350,
         1400, 1410, 1420, 1430, 1440, 1450, 1500, 1510, 1520, 1530,
       ];
+
+      const current = new Date();
+      const timeNumeric = current.getHours() * 100 + current.getMinutes();
+
+      var morningTimings = [];
+      var afternoonTimings = [];
+
+      if ((current.getMonth() == 7) & (current.getDate() == 21)) {
+        if (current.getHours() > 12) {
+          this.afternoon = true;
+        }
+
+        for (var time = 0; time < rawMorningTimings.length; time++) {
+          if (timeNumeric < rawMorningTimings[time]) {
+            morningTimings.push(rawMorningTimings[time]);
+          }
+        }
+
+        for (time = 0; time < rawAfternoonTimings.length; time++) {
+          if (timeNumeric < rawAfternoonTimings[time]) {
+            afternoonTimings.push(rawAfternoonTimings[time]);
+          }
+        }
+      } else {
+        morningTimings = rawMorningTimings;
+        afternoonTimings = rawAfternoonTimings;
+      }
+
       var morning_time_slots = [];
       for (var t = 0; t < morningTimings.length; t++) {
         morning_time_slots.push({
@@ -135,9 +163,24 @@ export default {
           }
         }
       }
-      this.morning_time_slot = morning_time_slots;
-      this.afternoon_time_slot = afternoon_time_slots;
-      console.log(fromDb);
+
+      var morning_times_with_non_zero_slots = [];
+      var afternoon_times_with_non_zero_slots = [];
+
+      for (t = 0; t < morning_time_slots.length; t++) {
+        if (morning_time_slots[t].slots != 0) {
+          morning_times_with_non_zero_slots.push(morning_time_slots[t]);
+        }
+      }
+
+      for (t = 0; t < afternoon_time_slots.length; t++) {
+        if (afternoon_time_slots[t].slots != 0) {
+          afternoon_times_with_non_zero_slots.push(afternoon_time_slots[t]);
+        }
+      }
+
+      this.morning_time_slot = morning_times_with_non_zero_slots;
+      this.afternoon_time_slot = afternoon_times_with_non_zero_slots;
       this.loading = false;
     },
   },
