@@ -38,4 +38,11 @@
 .spacer {
   flex-grow: 1;
 }
+
+.column-scroll {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+}
 </style>

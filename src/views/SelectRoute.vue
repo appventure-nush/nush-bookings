@@ -2,20 +2,23 @@
   <div class="select-route">
     <h1>Choose a route</h1>
     <p>Routes start and end differently but all cover the same locations.</p>
-    <h4>{{ timingFormatted }}</h4>
-    <div class="routes-list">
-      <RouteCard
-        v-for="route in routes"
-        :key="route.id"
-        :title="route.title"
-        :subtitle="route.location"
-        :subtitle2="route.spotsLeft + ' left'"
-        :selected="route.id === sel"
-        @click="sel = route.id"
-      />
+    <div class="column-scroll">
+      <h4>{{ timingFormatted }}</h4>
+      <div class="routes-list">
+        <RouteCard
+          v-for="route in routes"
+          :key="route.id"
+          :title="route.title"
+          :subtitle="route.location"
+          :subtitle2="route.spotsLeft + ' left'"
+          :selected="route.id === sel"
+          @click="sel = route.id"
+        />
+      </div>
     </div>
-    <div class="spacer"></div>
-    <Steps :numSteps="5" :currentStep="2" @continue="saveRouteAndContinue" />
+    <div style="margin-top: 30px">
+      <Steps :numSteps="5" :currentStep="2" @continue="saveRouteAndContinue" />
+    </div>
   </div>
 </template>
 

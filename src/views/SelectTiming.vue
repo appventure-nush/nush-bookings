@@ -1,31 +1,33 @@
 <template>
   <div class="select-timing">
     <h1>Choose a time</h1>
-    <h4 v-show="afternoon == false">Morning</h4>
-    <div class="grid">
-      <TimingCard
-        v-for="timing in morning_time_slot"
-        :key="timing"
-        :timing="timing.time"
-        :subtitle="`${timing.slots} slots left`"
-        :selected="timing === sel"
-        @click="sel = timing"
-      />
+    <div class="column-scroll">
+      <h4 v-show="afternoon == false">Morning</h4>
+      <div class="grid">
+        <TimingCard
+          v-for="timing in morning_time_slot"
+          :key="timing"
+          :timing="timing.time"
+          :subtitle="`${timing.slots} slots left`"
+          :selected="timing === sel"
+          @click="sel = timing"
+        />
+      </div>
+      <h4 style="margin-top: 36px">Afternoon</h4>
+      <div class="grid">
+        <TimingCard
+          v-for="timing in afternoon_time_slot"
+          :key="timing"
+          :timing="timing.time - 1200"
+          :subtitle="`${timing.slots} slots left`"
+          :selected="timing === sel"
+          @click="sel = timing"
+        />
+      </div>
     </div>
-    <div style="height: 36px"></div>
-    <h4>Afternoon</h4>
-    <div class="grid">
-      <TimingCard
-        v-for="timing in afternoon_time_slot"
-        :key="timing"
-        :timing="timing.time - 1200"
-        :subtitle="`${timing.slots} slots left`"
-        :selected="timing === sel"
-        @click="sel = timing"
-      />
+    <div style="margin-top: 30px">
+      <Steps :numSteps="5" :currentStep="1" @continue="saveTimingAndContinue" />
     </div>
-    <div class="spacer"></div>
-    <Steps :numSteps="5" :currentStep="1" @continue="saveTimingAndContinue" />
   </div>
 </template>
 

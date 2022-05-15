@@ -4,6 +4,7 @@ import SelectTiming from '@/views/SelectTiming.vue';
 import SelectRoute from '@/views/SelectRoute.vue';
 import NumberOfPeople from '@/views/NumberOfPeople.vue';
 import PhoneNumber from '@/views/PhoneNumber.vue';
+import SlotsTaken from '@/views/SlotsTaken.vue';
 
 const routes = [
   {
@@ -25,6 +26,10 @@ const routes = [
   {
     path: '/phone-number',
     component: PhoneNumber,
+  },
+  {
+    path: '/slots-taken',
+    component: SlotsTaken,
   },
 ];
 
