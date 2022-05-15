@@ -2,6 +2,7 @@
   <Transition>
     <Dialog
       v-if="showDialog"
+      v-show="bookingDone"
       title="Cancel booking?"
       message="Are you sure you want to cancel your booking? Your slot will be freed up for others."
       @yes="cancelBooking"
@@ -12,34 +13,70 @@
     <div style="display: flex; align-items: start">
       <img src="@/assets/img/school_logo.png" height="54" width="100" />
       <div class="spacer"></div>
-      <i class="person s24 regular"></i>
-      <span class="num-ppl">{{ numPpl }}</span>
+      <i v-show="bookingDone" class="person s24 regular"></i>
+      <span v-show="bookingDone" class="num-ppl">{{ numPpl }}</span>
     </div>
     <div class="spacer"></div>
-    <h1>You're all set!</h1>
-    <h2>Your NUS High tour is booked for 2 pm.</h2>
-    <span class="small-text">Show this screen to your tour guide</span>
+    <h1 v-show="bookingDone">You're all set!</h1>
+    <h1 v-show="!bookingDone">An error has occurred...</h1>
+    <h2 v-show="!bookingDone">
+      Oops... Seems like you have yet to register. Return to the main page to
+      register!
+    </h2>
+    <MyButton
+      v-show="!bookingDone"
+      text="Return to Main Page"
+      @click="returnMainPage"
+    />
+    <h2 v-show="bookingDone">
+      Your NUS High tour is booked for {{ tourTiming }}
+    </h2>
+    <span v-show="bookingDone" class="small-text">
+      Show this screen to your tour guide
+    </span>
     <div class="spacer"></div>
-    <div class="cancel-btn" @click="showDialog = true">Cancel booking</div>
+    <div v-show="bookingDone" class="cancel-btn" @click="showDialog = true">
+      Cancel booking
+    </div>
   </div>
 </template>
 
 <script>
 import Dialog from '../components/Dialog.vue';
-
+import { ref } from 'vue';
+import MyButton from '@/components/MyButton.vue';
+import { useRouter } from 'vue-router';
 
 export default {
-  components: { Dialog },
+  components: {
+    Dialog,
+    MyButton,
+  },
   data() {
     return {
-      showDialog: true,
-      numPpl: 2,
+      showDialog: false,
+      tourTiming: '2:00pm',
+      bookingDone: true,
+    };
+  },
+  setup() {
+    const router = useRouter();
+    const phoneNumber = ref(localStorage.getItem('phoneNumber'));
+    const numPpl = ref(localStorage.getItem('numPpl'));
+    function returnMainPage() {
+      router.push('../');
+    }
+    return {
+      phoneNumber,
+      numPpl,
+      returnMainPage,
     };
   },
   methods: {
     cancelBooking() {
       // TODO
       this.showDialog = false;
+      console.log(this.phoneNumber);
     },
   },
 };
