@@ -112,14 +112,30 @@ export default {
       window.confirmRes
         .confirm(this.otp)
         .then(() => {
+          const router = useRouter();
           this.page = 'processing';
-          // submit booking
-          DbService.addParticipant(
-            this.booking.selectedTiming + '_' + this.booking.selectedRoute,
-            this.phoneNumber,
-            parseInt(this.booking.numPpl)
+          const fromDb = DbService.getTour(
+            this.booking.selectedTiming + '_' + this.booking.selectedRoute
           );
-          console.log(this.booking);
+          var slotsRemaining = 12;
+          if (typeof fromDb.participants !== 'undefined') {
+            for (var j = 0; j < fromDb.participants.length; j++) {
+              slotsRemaining -= fromDb.participants[j].pax;
+            }
+          }
+
+          // submit booking
+          if (slotsRemaining >= parseInt(this.booking.numPpl)) {
+            DbService.addParticipant(
+              this.booking.selectedTiming + '_' + this.booking.selectedRoute,
+              this.phoneNumber,
+              parseInt(this.booking.numPpl)
+            );
+            console.log(this.booking);
+            router.push('/booking-pass');
+          } else {
+            router.push('/fail');
+          }
         })
         .catch(() => {
           this.invalidOTP = true;
