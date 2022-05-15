@@ -63,7 +63,6 @@ export default {
   },
   methods: {
     async loadToursTime() {
-      // var toursAtTime = [];
       console.log(this.selectedTiming);
       const fromDb = await DbService.getTourByTime(
         parseInt(this.selectedTiming)
@@ -103,6 +102,7 @@ export default {
 
         routes_time.push({
           title: 'Route ' + tour.route.stringValue,
+          id: tour.route.stringValue,
           location: loc,
           spotsLeft: slotsRemaining,
         });
