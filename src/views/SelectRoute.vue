@@ -9,7 +9,7 @@
           v-for="route in routes"
           :key="route.id"
           :title="route.title"
-          :subtitle="route.location"
+          :subtitle="'Starts at ' + route.location"
           :subtitle2="route.spotsLeft + ' left'"
           :selected="route.id === sel"
           @click="sel = route.id"

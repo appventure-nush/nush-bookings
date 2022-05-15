@@ -17,7 +17,7 @@
     </div>
     <div class="spacer"></div>
     <h1>You're all set!</h1>
-    <h2>Your NUS High tour is booked for 2 pm.</h2>
+    <h2>Your NUS High tour starts at the Theatrette at 2pm</h2>
     <span class="small-text">Show this screen to your tour guide</span>
     <div class="spacer"></div>
     <div class="cancel-btn" @click="showDialog = true">Cancel booking</div>
