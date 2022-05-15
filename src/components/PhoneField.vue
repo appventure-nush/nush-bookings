@@ -1,19 +1,24 @@
 <template>
-  <div class="phone-field">
+  <div class="phone-field" :class="{ error }">
     <span class="country-code">+65</span>
     <input
       type="tel"
       pattern="[0-9]{4} [0-9]{4}"
       :value="modelValue"
-      @input="$emit('$update:modelValue', $event.target.value)"
+      @input="$emit('update:modelValue', $event.target.value)"
     />
   </div>
+  <span v-if="error" class="error-msg">{{ error }}</span>
 </template>
 
 <script>
 export default {
   props: {
     modelValue: String,
+    error: {
+      type: String,
+      required: false,
+    },
   },
 };
 </script>
@@ -27,6 +32,11 @@ export default {
   border-radius: 10px;
   display: flex;
   align-items: center;
+  border-width: 1px;
+
+  &.error {
+    border: 1px solid #d42727;
+  }
 
   .country-code {
     color: rgba(#fff, 0.6);
@@ -44,5 +54,13 @@ export default {
     font-size: 20px;
     font-weight: 700;
   }
+}
+
+.error-msg {
+  color: #d42727;
+  font-size: 14px;
+  font-weight: 500;
+  margin-top: 12px;
+  margin-left: 12px;
 }
 </style>

@@ -6,16 +6,16 @@
     <div class="routes-list">
       <RouteCard
         v-for="route in routes"
-        :key="route.title"
+        :key="route.id"
         :title="route.title"
         :subtitle="route.location"
         :subtitle2="route.spotsLeft + ' left'"
-        :selected="route.title === sel"
-        @click="sel = route.title"
+        :selected="route.id === sel"
+        @click="sel = route.id"
       />
     </div>
     <div class="spacer"></div>
-    <Steps :numSteps="4" :currentStep="2" @continue="saveRouteAndContinue" />
+    <Steps :numSteps="5" :currentStep="2" @continue="saveRouteAndContinue" />
   </div>
 </template>
 
@@ -28,9 +28,9 @@ import { formatTiming } from '@/utils/formatTiming';
 import DbService from '../api/DbService';
 
 const ROUTES = [
-  { title: 'Route A', location: 'Concourse', spotsLeft: 12 },
-  { title: 'Route B', location: 'Level 4', spotsLeft: 12 },
-  { title: 'Route C', location: 'Amphitheatre', spotsLeft: 12 },
+  { id: 'A', title: 'Route A', location: 'Concourse', spotsLeft: 12 },
+  { id: 'B', title: 'Route B', location: 'Level 4', spotsLeft: 12 },
+  { id: 'C', title: 'Route C', location: 'Amphitheatre', spotsLeft: 12 },
 ];
 
 export default {
@@ -42,7 +42,7 @@ export default {
   },
   setup() {
     const router = useRouter();
-    const sel = ref(0);
+    const sel = ref(localStorage.getItem('selectedTiming'));
 
     const selectedTiming = localStorage.getItem('selectedTiming');
     const timingFormatted = formatTiming(selectedTiming);

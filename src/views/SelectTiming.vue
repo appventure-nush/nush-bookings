@@ -25,7 +25,7 @@
       />
     </div>
     <div class="spacer"></div>
-    <Steps :numSteps="4" :currentStep="1" @continue="saveTimingAndContinue" />
+    <Steps :numSteps="5" :currentStep="1" @continue="saveTimingAndContinue" />
   </div>
 </template>
 
