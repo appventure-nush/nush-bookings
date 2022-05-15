@@ -1,12 +1,13 @@
 <template>
   <div class="number-of-people">
     <h1>Number of people</h1>
+    <p>{{ titleFormatted }} <br /></p>
     <p>
       You can sign up for the rest of your family. How many people are you
       signing up for?
     </p>
     <div style="align-self: center">
-      <NumberSelect v-model="numPpl" :maxNum="4" />
+      <NumberSelect v-model="numPpl" :maxNum="slots_free" />
     </div>
     <div class="spacer"></div>
     <Steps :numSteps="5" :currentStep="3" @continue="saveNumPplAndContinue" />
@@ -18,9 +19,16 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import NumberSelect from '@/components/NumberSelect.vue';
 import Steps from '@/components/Steps.vue';
+import { formatTiming } from '@/utils/formatTiming';
+import DbService from '../api/DbService';
 
 export default {
   components: { NumberSelect, Steps },
+  data() {
+    return {
+      slots_free: 4,
+    };
+  },
   setup() {
     const router = useRouter();
     const numPpl = ref(1);
@@ -30,7 +38,38 @@ export default {
       router.push('/phone-number');
     }
 
-    return { numPpl, saveNumPplAndContinue };
+    const selectedRoute = localStorage.getItem('selectedRoute');
+    const selectedTiming = localStorage.getItem('selectedTiming');
+
+    const titleFormatted =
+      formatTiming(selectedTiming).toUpperCase() + ' Route ' + selectedRoute;
+
+    const tour_id = selectedTiming + '_' + selectedRoute;
+    console.log(tour_id);
+
+    return {
+      tour_id,
+      titleFormatted,
+      numPpl,
+      saveNumPplAndContinue,
+    };
+  },
+  methods: {
+    async checkSlots() {
+      const fromDb = await DbService.getTour(this.tour_id);
+      console.log(fromDb);
+      var slotsRemaining = 12;
+      if (typeof fromDb.participants !== 'undefined') {
+        for (var j = 0; j < fromDb.participants.length; j++) {
+          slotsRemaining -= fromDb.participants[j].pax;
+        }
+      }
+      console.log(fromDb.participants[0]);
+      this.slots_free = Math.min(4, slotsRemaining);
+    },
+  },
+  created() {
+    this.checkSlots();
   },
 };
 </script>
