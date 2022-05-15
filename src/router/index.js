@@ -5,6 +5,7 @@ import SelectRoute from '@/views/SelectRoute.vue';
 import NumberOfPeople from '@/views/NumberOfPeople.vue';
 import PhoneNumber from '@/views/PhoneNumber.vue';
 import SlotsTaken from '@/views/SlotsTaken.vue';
+import BookingPass from '@/views/BookingPass.vue';
 
 const routes = [
   {
@@ -30,6 +31,10 @@ const routes = [
   {
     path: '/slots-taken',
     component: SlotsTaken,
+  },
+  {
+    path: '/booking-pass',
+    component: BookingPass,
   },
 ];
 
