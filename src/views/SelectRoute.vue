@@ -72,7 +72,6 @@ export default {
       );
 
       var routes_time = [];
-
       for (var i = 0; i < fromDb.length; i++) {
         var tour = fromDb[i];
         var slotsRemaining = 12;
