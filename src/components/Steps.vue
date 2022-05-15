@@ -7,7 +7,11 @@
       :class="{ current: index === currentStep }"
     ></div>
     <div class="spacer"></div>
-    <MyButton text="Continue" @click="$emit('continue')" />
+    <MyButton
+      text="Continue"
+      :disabled="!canContinue"
+      @click="if (canContinue) $emit('continue');"
+    />
   </div>
 </template>
 
@@ -19,6 +23,10 @@ export default {
   props: {
     numSteps: Number,
     currentStep: Number,
+    canContinue: {
+      type: Boolean,
+      default: true,
+    },
   },
   setup() {
     return {};

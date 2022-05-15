@@ -1,11 +1,15 @@
 <template>
-  <div class="button">{{ text }}</div>
+  <div class="button" :class="{ disabled }">{{ text }}</div>
 </template>
 
 <script>
 export default {
   props: {
     text: String,
+    disabled: {
+      type: Boolean,
+      default: false,
+    },
   },
   setup() {
     return {};
@@ -31,10 +35,15 @@ export default {
   background-image: linear-gradient(45deg, #3865a8, #00a499);
   background-size: 200% 100%;
   background-position: 100%;
-  transition: background-position 600ms;
+  transition: background-position 400ms;
 
   &:active {
     background-position: 0% 0%;
+  }
+
+  &.disabled {
+    background-image: none;
+    background-color: #234a48;
   }
 }
 </style>

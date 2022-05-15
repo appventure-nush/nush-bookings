@@ -6,6 +6,8 @@
 </template>
 
 <script>
+import { formatTiming } from '../utils/formatTiming';
+
 export default {
   props: {
     timing: Number,
@@ -14,11 +16,7 @@ export default {
   },
   computed: {
     timingFormatted() {
-      return (
-        Math.floor(this.timing / 100) +
-        '.' +
-        ((this.timing % 100) + '').padStart(2, '0')
-      );
+      return formatTiming(this.timing, false);
     },
   },
 };

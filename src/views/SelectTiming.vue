@@ -1,31 +1,33 @@
 <template>
   <div class="select-timing">
     <h1>Choose a time</h1>
-    <h4 v-show="afternoon == false">Morning</h4>
-    <div class="grid">
-      <TimingCard
-        v-for="timing in morning_time_slot"
-        :key="timing"
-        :timing="timing.time"
-        :subtitle="`${timing.slots} slots left`"
-        :selected="timing === sel"
-        @click="sel = timing"
-      />
+    <div class="column-scroll">
+      <h4 v-show="afternoon == false">Morning</h4>
+      <div class="grid">
+        <TimingCard
+          v-for="timing in morning_time_slot"
+          :key="timing"
+          :timing="timing.time"
+          :subtitle="`${timing.slots} slots left`"
+          :selected="timing === sel"
+          @click="sel = timing"
+        />
+      </div>
+      <h4 style="margin-top: 36px">Afternoon</h4>
+      <div class="grid">
+        <TimingCard
+          v-for="timing in afternoon_time_slot"
+          :key="timing"
+          :timing="timing.time - 1200"
+          :subtitle="`${timing.slots} slots left`"
+          :selected="timing === sel"
+          @click="sel = timing"
+        />
+      </div>
     </div>
-    <div style="height: 36px"></div>
-    <h4>Afternoon</h4>
-    <div class="grid">
-      <TimingCard
-        v-for="timing in afternoon_time_slot"
-        :key="timing"
-        :timing="timing.time - 1200"
-        :subtitle="`${timing.slots} slots left`"
-        :selected="timing === sel"
-        @click="sel = timing"
-      />
+    <div style="margin-top: 30px">
+      <Steps :numSteps="5" :currentStep="1" @continue="saveTimingAndContinue" />
     </div>
-    <div class="spacer"></div>
-    <Steps :numSteps="4" :currentStep="1" @continue="saveTimingAndContinue" />
   </div>
 </template>
 
@@ -69,8 +71,8 @@ export default {
     const sel = ref(0);
 
     function saveTimingAndContinue() {
-      localStorage.setItem('selectedTiming', sel.value);
-      console.log(sel.value);
+      localStorage.setItem('selectedTiming', sel.value.time);
+      console.log(sel.value.time);
       router.push('/select-route');
     }
 
@@ -84,7 +86,6 @@ export default {
       for (var i = 0; i < fromDb.length; i++) {
         var obj = fromDb[i];
         var slotRemaining = 12;
-        console.log(obj.participants.arrayValue.values);
         if (typeof obj.participants.arrayValue.values !== 'undefined') {
           for (var j = 0; j < obj.participants.arrayValue.values.length; j++) {
             slotRemaining -=
