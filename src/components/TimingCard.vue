@@ -15,7 +15,9 @@ export default {
   computed: {
     timingFormatted() {
       return (
-        this.timing / 100 + '.' + ((this.timing % 100) + '').padStart(2, '0')
+        Math.floor(this.timing / 100) +
+        '.' +
+        ((this.timing % 100) + '').padStart(2, '0')
       );
     },
   },
