@@ -117,7 +117,7 @@ export default {
           DbService.addParticipant(
             this.booking.selectedTiming + '_' + this.booking.selectedRoute,
             this.phoneNumber,
-            this.booking.numPpl
+            parseInt(this.booking.numPpl)
           );
           console.log(this.booking);
         })
