@@ -25,6 +25,7 @@ import { useRouter } from 'vue-router';
 import RouteCard from '@/components/RouteCard.vue';
 import Steps from '@/components/Steps.vue';
 import { formatTiming } from '@/utils/formatTiming';
+import DbService from '../api/DbService';
 
 const ROUTES = [
   { title: 'Route A', location: 'Concourse', spotsLeft: 12 },
@@ -34,6 +35,11 @@ const ROUTES = [
 
 export default {
   components: { RouteCard, Steps },
+  data() {
+    return {
+      routes: ROUTES,
+    };
+  },
   setup() {
     const router = useRouter();
     const sel = ref(0);
@@ -41,12 +47,72 @@ export default {
     const selectedTiming = localStorage.getItem('selectedTiming');
     const timingFormatted = formatTiming(selectedTiming);
 
+    console.log(timingFormatted);
+
     function saveRouteAndContinue() {
       localStorage.setItem('selectedRoute', sel.value);
       router.push('/num-people');
     }
 
-    return { routes: ROUTES, timingFormatted, sel, saveRouteAndContinue };
+    return {
+      selectedTiming,
+      timingFormatted,
+      sel,
+      saveRouteAndContinue,
+    };
+  },
+  methods: {
+    async loadToursTime() {
+      // var toursAtTime = [];
+      console.log(this.selectedTiming);
+      const fromDb = await DbService.getTourByTime(
+        parseInt(this.selectedTiming)
+      );
+
+      var routes_time = [];
+
+      for (var i = 0; i < fromDb.length; i++) {
+        var tour = fromDb[i];
+        var slotsRemaining = 12;
+        console.log(fromDb[i]);
+        if (typeof tour.participants.arrayValue.values !== 'undefined') {
+          for (var j = 0; j < tour.participants.arrayValue.values.length; j++) {
+            slotsRemaining -=
+              tour.participants.arrayValue.values[j].mapValue.fields.pax
+                .integerValue;
+          }
+        }
+        console.log(slotsRemaining);
+
+        var loc = 'temp';
+
+        switch (tour.route.stringValue[0]) {
+          case 'A':
+            loc = 'Theatrette';
+            break;
+          case 'B':
+            loc = 'Year 1 Classrooms';
+            break;
+          case 'C':
+            loc = 'The House Murals';
+            break;
+          case 'D':
+            loc = 'Ecopond';
+            break;
+        }
+
+        routes_time.push({
+          title: 'Route ' + tour.route.stringValue,
+          location: loc,
+          spotsLeft: slotsRemaining,
+        });
+      }
+
+      this.routes = routes_time;
+    },
+  },
+  created() {
+    this.loadToursTime();
   },
 };
 </script>
