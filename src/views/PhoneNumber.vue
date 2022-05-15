@@ -47,6 +47,7 @@ import {
 import PhoneField from '@/components/PhoneField.vue';
 import Steps from '@/components/Steps.vue';
 import Loading from '@/components/Loading.vue';
+import DbService from '../api/DbService';
 
 const auth = getAuth();
 
@@ -113,6 +114,11 @@ export default {
         .then(() => {
           this.page = 'processing';
           // submit booking
+          DbService.addParticipant(
+            this.booking.selectedTiming + '_' + this.booking.selectedRoute,
+            this.phoneNumber,
+            parseInt(this.booking.numPpl)
+          );
           console.log(this.booking);
         })
         .catch(() => {
