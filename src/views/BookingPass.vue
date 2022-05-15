@@ -27,6 +27,7 @@
 <script>
 import Dialog from '../components/Dialog.vue';
 
+
 export default {
   components: { Dialog },
   data() {
