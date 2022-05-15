@@ -26,7 +26,6 @@ export default {
   left: 50%;
   transform: translate(-50%, -50%);
   width: 80%;
-  height: 200px;
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 14px 30px rgba(#000, 0.15);
