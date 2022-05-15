@@ -9,7 +9,7 @@
       <NumberSelect v-model="numPpl" :maxNum="4" />
     </div>
     <div class="spacer"></div>
-    <Steps :numSteps="4" :currentStep="3" @continue="saveNumPplAndContinue" />
+    <Steps :numSteps="5" :currentStep="3" @continue="saveNumPplAndContinue" />
   </div>
 </template>
 
