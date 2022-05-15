@@ -18,7 +18,7 @@
   <div v-else-if="page === 'enterOTP'" class="page">
     <h1>Verification</h1>
     <p>
-      A 6-digit OTP was sent to <b>+65{{ phoneNumber }}</b
+      A 6-digit OTP was sent to <b>+65 {{ phoneNumber }}</b
       >. Enter it below:
     </p>
     <input

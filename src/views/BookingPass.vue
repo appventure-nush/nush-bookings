@@ -17,29 +17,23 @@
       <span v-show="bookingDone" class="num-ppl">{{ numPpl }}</span>
     </div>
     <div class="spacer"></div>
-<<<<<<< HEAD
     <h1 v-show="bookingDone">You're all set!</h1>
     <h1 v-show="!bookingDone">An error has occurred...</h1>
     <h2 v-show="!bookingDone">
       Oops... Seems like you have yet to register. Return to the main page to
       register!
     </h2>
-    <MyButton
-      v-show="!bookingDone"
-      text="Return to Main Page"
-      @click="returnMainPage"
-    />
+    <div v-show="!bookingDone" class="cancel-btn" @click="returnMainPage">
+      Return to Main Page
+    </div>
     <h2 v-show="bookingDone">
       Your NUS High tour is booked for {{ tourTiming }}
     </h2>
+    <h2 v-show="bookingDone">Phone Number: {{ phoneNumber }}</h2>
+    <h2 v-show="bookingDone">Tour ID: {{ tourID }}</h2>
     <span v-show="bookingDone" class="small-text">
       Show this screen to your tour guide
     </span>
-=======
-    <h1>You're all set!</h1>
-    <h2>Your NUS High tour starts at the Theatrette at 2pm</h2>
-    <span class="small-text">Show this screen to your tour guide</span>
->>>>>>> 000590cfc68b288f0aed36b8c7dc303e19cf1385
     <div class="spacer"></div>
     <div v-show="bookingDone" class="cancel-btn" @click="showDialog = true">
       Cancel booking
@@ -50,19 +44,19 @@
 <script>
 import Dialog from '../components/Dialog.vue';
 import { ref } from 'vue';
-import MyButton from '@/components/MyButton.vue';
 import { useRouter } from 'vue-router';
+import DbService from '../api/DbService';
 
 export default {
   components: {
     Dialog,
-    MyButton,
   },
   data() {
     return {
       showDialog: false,
       tourTiming: '2:00pm',
       bookingDone: true,
+      tourID: '',
     };
   },
   setup() {
@@ -78,11 +72,20 @@ export default {
       returnMainPage,
     };
   },
+  async created() {
+    this.tourID = await DbService.getTourbyParticipant(
+      parseInt(this.phoneNumber),
+      parseInt(this.numPpl)
+    );
+    console.log(this.tourID);
+    if (this.phoneNumber == null || this.numPpl == null) {
+      this.bookingDone = false;
+    }
+  },
   methods: {
     cancelBooking() {
-      // TODO
+      // TODO: if i can manage to get tour ID
       this.showDialog = false;
-      console.log(this.phoneNumber);
     },
   },
 };
