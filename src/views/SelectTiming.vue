@@ -69,8 +69,8 @@ export default {
     const sel = ref(0);
 
     function saveTimingAndContinue() {
-      localStorage.setItem('selectedTiming', sel.value);
-      console.log(sel.value);
+      localStorage.setItem('selectedTiming', sel.value.time);
+      console.log(sel.value.time);
       router.push('/select-route');
     }
 
@@ -84,7 +84,6 @@ export default {
       for (var i = 0; i < fromDb.length; i++) {
         var obj = fromDb[i];
         var slotRemaining = 12;
-        console.log(obj.participants.arrayValue.values);
         if (typeof obj.participants.arrayValue.values !== 'undefined') {
           for (var j = 0; j < obj.participants.arrayValue.values.length; j++) {
             slotRemaining -=
