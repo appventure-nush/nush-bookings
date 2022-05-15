@@ -17,6 +17,7 @@
       <span v-show="bookingDone" class="num-ppl">{{ numPpl }}</span>
     </div>
     <div class="spacer"></div>
+<<<<<<< HEAD
     <h1 v-show="bookingDone">You're all set!</h1>
     <h1 v-show="!bookingDone">An error has occurred...</h1>
     <h2 v-show="!bookingDone">
@@ -34,6 +35,11 @@
     <span v-show="bookingDone" class="small-text">
       Show this screen to your tour guide
     </span>
+=======
+    <h1>You're all set!</h1>
+    <h2>Your NUS High tour starts at the Theatrette at 2pm</h2>
+    <span class="small-text">Show this screen to your tour guide</span>
+>>>>>>> 000590cfc68b288f0aed36b8c7dc303e19cf1385
     <div class="spacer"></div>
     <div v-show="bookingDone" class="cancel-btn" @click="showDialog = true">
       Cancel booking
