@@ -102,12 +102,14 @@ export default {
             break;
         }
 
-        routes_time.push({
-          title: 'Route ' + tour.route.stringValue,
-          id: tour.route.stringValue,
-          location: loc,
-          spotsLeft: slotsRemaining,
-        });
+        if (slotsRemaining > 0) {
+          routes_time.push({
+            title: 'Route ' + tour.route.stringValue,
+            id: tour.route.stringValue,
+            location: loc,
+            spotsLeft: slotsRemaining,
+          });
+        }
       }
 
       this.routes = routes_time;
