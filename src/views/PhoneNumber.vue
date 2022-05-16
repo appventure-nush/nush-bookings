@@ -116,8 +116,6 @@ export default {
           const fromDb = await DbService.getTour(
             this.booking.selectedTiming + '_' + this.booking.selectedRoute
           );
-          console.log('FETCHED TOUR');
-          console.log(fromDb);
           var slotsRemaining = 12;
           if (typeof fromDb.participants !== 'undefined') {
             slotsRemaining -= fromDb.participants.reduce(
@@ -125,7 +123,6 @@ export default {
               0
             );
           }
-          console.log(slotsRemaining);
 
           // watch animation for 2 seconds
           await new Promise((r) => setTimeout(r, 2000));
@@ -137,7 +134,6 @@ export default {
               this.phoneNumber,
               parseInt(this.booking.numPpl)
             );
-            console.log(this.booking);
             this.$router.push('/booking-pass');
           } else {
             this.$router.push('/slots-taken');

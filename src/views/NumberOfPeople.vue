@@ -1,10 +1,9 @@
 <template>
   <div class="number-of-people">
     <h1>Number of people</h1>
-    <p>{{ titleFormatted }} <br /></p>
     <p>
-      You can sign up for the rest of your family. How many people are you
-      signing up for?
+      Tour selected: {{ titleFormatted }}. You can sign up for the rest of your
+      family. How many people are you signing up for?
     </p>
     <div style="align-self: center">
       <NumberSelect v-model="numPpl" :maxNum="slots_free" />
@@ -42,10 +41,9 @@ export default {
     const selectedTiming = localStorage.getItem('selectedTiming');
 
     const titleFormatted =
-      formatTiming(selectedTiming).toUpperCase() + ' Route ' + selectedRoute;
+      formatTiming(selectedTiming).toUpperCase() + ', route ' + selectedRoute;
 
     const tour_id = selectedTiming + '_' + selectedRoute;
-    console.log(tour_id);
 
     return {
       tour_id,
@@ -57,14 +55,12 @@ export default {
   methods: {
     async checkSlots() {
       const fromDb = await DbService.getTour(this.tour_id);
-      console.log(fromDb);
       var slotsRemaining = 12;
       if (typeof fromDb.participants !== 'undefined') {
         for (var j = 0; j < fromDb.participants.length; j++) {
           slotsRemaining -= fromDb.participants[j].pax;
         }
       }
-      console.log(fromDb.participants[0]);
       this.slots_free = Math.min(4, slotsRemaining);
     },
   },

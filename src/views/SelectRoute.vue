@@ -50,8 +50,6 @@ export default {
     const selectedTiming = localStorage.getItem('selectedTiming');
     const timingFormatted = formatTiming(selectedTiming);
 
-    console.log(timingFormatted);
-
     function saveRouteAndContinue() {
       localStorage.setItem('selectedRoute', sel.value);
       router.push('/num-people');
@@ -66,7 +64,6 @@ export default {
   },
   methods: {
     async loadToursTime() {
-      console.log(this.selectedTiming);
       const fromDb = await DbService.getTourByTime(
         parseInt(this.selectedTiming)
       );
@@ -75,7 +72,6 @@ export default {
       for (var i = 0; i < fromDb.length; i++) {
         var tour = fromDb[i];
         var slotsRemaining = 12;
-        console.log(fromDb[i]);
         if (typeof tour.participants.arrayValue.values !== 'undefined') {
           for (var j = 0; j < tour.participants.arrayValue.values.length; j++) {
             slotsRemaining -=
@@ -83,7 +79,6 @@ export default {
                 .integerValue;
           }
         }
-        console.log(slotsRemaining);
 
         var loc = 'temp';
 

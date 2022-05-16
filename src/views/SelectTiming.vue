@@ -72,7 +72,6 @@ export default {
 
     function saveTimingAndContinue() {
       localStorage.setItem('selectedTiming', sel.value.time);
-      console.log(sel.value.time);
       router.push('/select-route');
     }
 
@@ -97,7 +96,6 @@ export default {
           time: obj.time.integerValue,
           slots: slotRemaining,
         });
-        console.log(obj.time.integerValue + ' ' + slotRemaining);
       }
       var rawMorningTimings = [
         900, 910, 920, 930, 940, 950, 1000, 1010, 1020, 1030, 1040, 1050, 1100,
@@ -114,7 +112,6 @@ export default {
 
       var morningTimings = [];
       var afternoonTimings = [];
-      console.log(current.getMonth() + ' ' + current.getDate());
       if ((current.getMonth() == 4) & (current.getDate() == 21)) {
         if (current.getHours() > 12) {
           this.afternoon = true;

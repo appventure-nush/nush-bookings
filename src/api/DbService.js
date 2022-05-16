@@ -31,7 +31,6 @@ export default {
     const querySnapshot = await getDocs(collection(db, 'tours'));
     var compliedData = [];
     querySnapshot.forEach((doc) => {
-      console.log(`${doc.id} => ${doc.data()}`);
       compliedData = compliedData.concat(
         doc._document.data.value.mapValue.fields
       );
@@ -46,9 +45,6 @@ export default {
 
     if (docSnap.exists()) {
       return docSnap.data();
-    } else {
-      // doc.data() will be undefined in this case
-      console.log('No such document!');
     }
   },
 
@@ -59,7 +55,6 @@ export default {
 
     var compliedData = [];
     querySnapshot.forEach((doc) => {
-      console.log(`${doc.id} => ${doc.data()}`);
       compliedData = compliedData.concat(
         doc._document.data.value.mapValue.fields
       );
@@ -81,7 +76,6 @@ export default {
 
     var compliedData = [];
     querySnapshot.forEach((doc) => {
-      console.log(`${doc.id} => ${doc.data()}`);
       compliedData = compliedData.concat(
         doc._document.data.value.mapValue.fields
       );

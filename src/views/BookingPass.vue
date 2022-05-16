@@ -95,8 +95,6 @@ export default {
         await getAuth().signOut();
         return;
       }
-      console.log('INFO');
-      console.log(bookingInfo);
       this.selectedTiming = bookingInfo.time.integerValue;
       this.selectedRoute = bookingInfo.route.stringValue;
     },
