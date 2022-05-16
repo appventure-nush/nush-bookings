@@ -26,8 +26,8 @@ export default {
   color: white;
   background-color: #1c1c1c;
   padding: 70px;
-  height: 100vh;
-  height: -webkit-fill-available;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
 
   i {
     transform: scale(8);
