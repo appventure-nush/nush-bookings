@@ -202,6 +202,7 @@ export default {
 <style lang="scss" scoped>
 .select-timing {
   height: 100vh;
+  height: -webkit-fill-available;
   display: flex;
   flex-direction: column;
   background-color: #1c1c1c;

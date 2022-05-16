@@ -33,6 +33,7 @@
   box-sizing: border-box;
   font-family: 'Avenir';
   /* line-height: 1.2; */
+  -webkit-tap-highlight-color: transparent;
 }
 
 .spacer {
