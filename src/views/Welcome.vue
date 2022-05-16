@@ -13,6 +13,8 @@
     </p>
     <div style="height: 50px"></div>
     <MyButton text="Sign up" @click="signUp" />
+    <div class="spacer"></div>
+    <span class="credits">By Jia Jie, Dave, Teck Kong, Prannaya</span>
   </div>
 </template>
 
@@ -36,8 +38,7 @@ export default {
 
 <style lang="scss" scoped>
 .welcome {
-  min-height: 100vh;
-  min-height: -webkit-fill-available;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   background-color: #1c1c1c;
@@ -61,6 +62,12 @@ export default {
   p {
     color: rgba(white, 0.8);
     font-size: 18px;
+    font-weight: 500;
+  }
+
+  .credits {
+    color: rgba(#fff, 0.6);
+    font-size: 16px;
     font-weight: 500;
   }
 }

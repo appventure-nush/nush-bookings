@@ -148,8 +148,7 @@ export default {
 
 <style lang="scss" scoped>
 .page {
-  min-height: 100vh;
-  min-height: -webkit-fill-available;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   background-color: #1c1c1c;
