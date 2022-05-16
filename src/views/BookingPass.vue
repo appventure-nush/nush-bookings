@@ -4,6 +4,7 @@
       v-if="showDialog"
       title="Cancel booking?"
       message="Are you sure you want to cancel your booking? Your slot will be freed up for others."
+      isYesNo
       @yes="cancelBooking"
       @no="showDialog = false"
     />
@@ -179,17 +180,5 @@ h2 {
   &:active {
     background-color: rgba(#000, 0.2);
   }
-}
-
-// for dialog transition
-
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 400ms ease;
-}
-
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
 }
 </style>
