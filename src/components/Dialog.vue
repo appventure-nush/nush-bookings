@@ -29,7 +29,7 @@ export default {
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 14px 30px rgba(#000, 0.15);
-  padding: 24px 24px 20px 24px;
+  padding: 24px 24px 16px 24px;
   display: flex;
   flex-direction: column;
 
@@ -41,6 +41,7 @@ export default {
 
   p {
     font-size: 16px;
+    font-weight: 500;
     margin-bottom: 28px;
   }
 

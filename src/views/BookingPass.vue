@@ -9,7 +9,7 @@
     />
   </Transition>
   <div class="booking-pass" :class="routeColor">
-    <div style="display: flex; align-items: start">
+    <div style="display: flex; align-items: center">
       <img src="@/assets/img/school_logo.png" height="54" width="100" />
       <div class="spacer"></div>
       <i class="person s24 regular"></i>
@@ -118,7 +118,7 @@ export default {
 .booking-pass {
   height: 100%;
   background-size: cover;
-  padding: 46px 50px 40px 50px;
+  padding: 42px 46px 40px 46px;
   color: white;
   display: flex;
   flex-direction: column;
@@ -141,26 +141,26 @@ export default {
 }
 
 .num-ppl {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 500;
   margin-left: 10px;
 }
 
 h1 {
-  font-size: 36px;
+  font-size: 32px;
   font-weight: 700;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 h2 {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 700;
   opacity: 0.8;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .small-text {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
   opacity: 0.4;
 }
@@ -168,8 +168,8 @@ h2 {
 .cancel-btn {
   align-self: flex-start;
   background-color: rgba(#000, 0.1);
-  padding: 14px 18px 14px 18px;
-  font-size: 16px;
+  padding: 14px 18px 13px 18px;
+  font-size: 14px;
   font-weight: 700;
   border-radius: 8px;
   cursor: pointer;

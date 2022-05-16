@@ -13,7 +13,7 @@
           @click="sel = slot.time"
         />
       </div>
-      <h4 style="margin-top: 36px">Afternoon</h4>
+      <h4 style="margin-top: 32px">Afternoon</h4>
       <div class="grid">
         <TimingCard
           v-for="slot in afternoon_time_slot"
@@ -209,7 +209,7 @@ export default {
   padding: 30px;
 
   h1 {
-    margin-bottom: 36px;
+    margin-bottom: 32px;
     font-size: 32px;
     font-weight: 700;
     background-image: linear-gradient(45deg, #00a499, #006760);
@@ -222,8 +222,8 @@ export default {
   }
 
   h4 {
-    margin-bottom: 20px;
-    font-size: 20px;
+    margin-bottom: 18px;
+    font-size: 18px;
     font-weight: 700;
   }
 }
