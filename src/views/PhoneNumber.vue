@@ -136,7 +136,7 @@ export default {
             console.log(this.booking);
             router.push('/booking-pass');
           } else {
-            router.push('/fail');
+            router.push('/slots-taken');
           }
         })
         .catch(() => {

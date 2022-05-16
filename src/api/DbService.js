@@ -72,7 +72,7 @@ export default {
     const docRef = collection(db, 'tours');
     const q = query(
       docRef,
-      where('participants', 'arrayContains', {
+      where('participants', 'array-contains', {
         phone_no: phone_no,
         pax: pax,
       })
