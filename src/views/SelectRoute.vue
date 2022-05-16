@@ -17,7 +17,12 @@
       </div>
     </div>
     <div style="margin-top: 30px">
-      <Steps :numSteps="5" :currentStep="2" @continue="saveRouteAndContinue" />
+      <Steps
+        :numSteps="5"
+        :currentStep="2"
+        :canContinue="sel != null"
+        @continue="saveRouteAndContinue"
+      />
     </div>
   </div>
 </template>

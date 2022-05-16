@@ -45,14 +45,27 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (getAuth().currentUser == null) {
-    if (to.path === '/booking-pass') next('/');
-    else next();
-  } else {
-    // is authenticated
-    if (to.path !== '/booking-pass') next('/booking-pass');
-    else next();
-  }
+  getAuth().onAuthStateChanged(
+    (user) => {
+      if (user == null) {
+        if (to.path === '/booking-pass') next('/');
+        else next();
+      } else {
+        // is authenticated
+        if (to.path !== '/booking-pass') next('/booking-pass');
+        else next();
+      }
+    },
+    (error) => {}
+  );
+  // if (getAuth().currentUser == null) {
+  //   if (to.path === '/booking-pass') next('/');
+  //   else next();
+  // } else {
+  //   // is authenticated
+  //   if (to.path !== '/booking-pass') next('/booking-pass');
+  //   else next();
+  // }
 });
 
 export default router;

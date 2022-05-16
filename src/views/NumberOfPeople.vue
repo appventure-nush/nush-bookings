@@ -9,7 +9,12 @@
       <NumberSelect v-model="numPpl" :maxNum="slots_free" />
     </div>
     <div class="spacer"></div>
-    <Steps :numSteps="5" :currentStep="3" @continue="saveNumPplAndContinue" />
+    <Steps
+      :numSteps="5"
+      :currentStep="3"
+      :canContinue="numPpl !== 0"
+      @continue="saveNumPplAndContinue"
+    />
   </div>
 </template>
 
@@ -30,7 +35,7 @@ export default {
   },
   setup() {
     const router = useRouter();
-    const numPpl = ref(parseInt(localStorage.getItem('numPpl')));
+    const numPpl = ref(parseInt(localStorage.getItem('numPpl') ?? 0));
 
     function saveNumPplAndContinue() {
       localStorage.setItem('numPpl', numPpl.value);

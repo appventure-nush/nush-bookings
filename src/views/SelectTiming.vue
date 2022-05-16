@@ -29,7 +29,7 @@
       <Steps
         :numSteps="5"
         :currentStep="1"
-        :canContinue="sel != undefined"
+        :canContinue="sel !== 0"
         @continue="saveTimingAndContinue"
       />
     </div>
@@ -73,7 +73,7 @@ export default {
   },
   setup() {
     const router = useRouter();
-    const sel = ref(parseInt(localStorage.getItem('selectedTiming')));
+    const sel = ref(parseInt(localStorage.getItem('selectedTiming') ?? 0));
 
     function saveTimingAndContinue() {
       localStorage.setItem('selectedTiming', sel.value);
