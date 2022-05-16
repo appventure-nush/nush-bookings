@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { getAuth } from 'firebase/auth';
 import Welcome from '@/views/Welcome.vue';
 import SelectTiming from '@/views/SelectTiming.vue';
 import SelectRoute from '@/views/SelectRoute.vue';
@@ -41,6 +42,16 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (getAuth().currentUser == null) {
+    if (to.path === '/booking-pass') next('/');
+    else next();
+  } else {
+    // is authenticated
+    next('/booking-pass');
+  }
 });
 
 export default router;
