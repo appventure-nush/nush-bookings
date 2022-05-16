@@ -148,7 +148,7 @@ export default {
 
 <style lang="scss" scoped>
 .page {
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   background-color: #1c1c1c;

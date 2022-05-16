@@ -46,4 +46,12 @@
   flex-direction: column;
   overflow-y: scroll;
 }
+
+// to fix fullscreen issue on mobile
+
+html,
+body,
+#app {
+  height: 100%;
+}
 </style>

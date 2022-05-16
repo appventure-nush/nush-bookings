@@ -26,7 +26,7 @@ export default {
 .timing-card {
   display: flex;
   flex-direction: column;
-  padding: 10px 16px 10px 16px;
+  padding: 8px 12px 8px 12px;
   border-radius: 10px;
   user-select: none;
   cursor: pointer;
@@ -40,14 +40,14 @@ export default {
 
   .timing {
     color: rgba(#fff, 0.8);
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 700;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
   }
 
   .subtitle {
     color: rgba(#fff, 0.8);
-    font-size: 14px;
+    font-size: 12px;
   }
 }
 </style>

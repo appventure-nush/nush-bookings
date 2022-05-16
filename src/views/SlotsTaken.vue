@@ -26,7 +26,7 @@ export default {
   color: white;
   background-color: #1c1c1c;
   padding: 70px;
-  height: 100vh;
+  height: 100%;
 
   i {
     transform: scale(8);

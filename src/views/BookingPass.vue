@@ -116,7 +116,7 @@ export default {
 
 <style lang="scss" scoped>
 .booking-pass {
-  height: 100vh;
+  height: 100%;
   background-size: cover;
   padding: 46px 50px 40px 50px;
   color: white;
