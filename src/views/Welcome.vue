@@ -6,7 +6,7 @@
       The tour will take roughly 30 minutes, giving you an overview of our
       school's main facilities from the labs, to the lounge to the library.
     </p>
-    <div style="height: 20px"></div>
+    <div style="height: 18px"></div>
     <p>
       To let everyone have a chance to experience the tour, please do not sign
       up for more than one timing.
@@ -42,13 +42,13 @@ export default {
   display: flex;
   flex-direction: column;
   background-color: #1c1c1c;
-  padding: 40px;
+  padding: 36px;
 
   h1 {
-    margin-top: 76px;
-    margin-bottom: 48px;
-    margin-right: 80px;
-    font-size: 36px;
+    margin-top: 68px;
+    margin-bottom: 36px;
+    margin-right: 64px;
+    font-size: 32px;
     font-weight: 700;
     background-image: linear-gradient(45deg, #00a499, #003f3b);
     background-size: 100%;
@@ -61,13 +61,13 @@ export default {
 
   p {
     color: rgba(white, 0.8);
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 500;
   }
 
   .credits {
-    color: rgba(#fff, 0.6);
-    font-size: 16px;
+    color: rgba(#fff, 0.4);
+    font-size: 14px;
     font-weight: 500;
   }
 }

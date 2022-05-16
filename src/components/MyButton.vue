@@ -20,14 +20,14 @@ export default {
 <style lang="scss" scoped>
 .button {
   width: fit-content;
-  height: 52px;
-  padding-left: 32px;
-  padding-right: 32px;
+  height: 50px;
+  padding-left: 28px;
+  padding-right: 28px;
   display: grid;
   place-items: center;
   border-radius: 14px;
   color: black;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   user-select: none;
   cursor: pointer;
