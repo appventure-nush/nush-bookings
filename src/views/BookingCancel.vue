@@ -3,7 +3,7 @@
     <div style="display: flex; align-items: start">
       <img src="@/assets/img/school_logo.png" height="54" width="100" />
     </div>
-    <h2>Your booking has been cancelled</h2>
+    <h1>Your booking has been cancelled</h1>
     <div class="cancel-btn" @click="returnMainPage">
       Click here to return to main page
     </div>

@@ -46,6 +46,7 @@ import Dialog from '../components/Dialog.vue';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import DbService from '../api/DbService';
+import router from '../router';
 
 export default {
   components: {
@@ -76,7 +77,7 @@ export default {
     this.tourID = await DbService.getTourbyParticipant(
       parseInt(this.phoneNumber),
       parseInt(this.numPpl)
-    );
+    ).tour_id;
     console.log(this.tourID);
     if (this.phoneNumber == null || this.numPpl == null) {
       this.bookingDone = false;
@@ -86,6 +87,7 @@ export default {
     cancelBooking() {
       // TODO: if i can manage to get tour ID
       this.showDialog = false;
+      router.push('/booking-cancel');
     },
   },
 };
