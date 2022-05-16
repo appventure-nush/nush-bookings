@@ -4,8 +4,10 @@
     <h1>NUS High School Tour</h1>
     <p>
       The tour will take roughly 30 minutes and run throughout the school,
-      highlighting key locations where the students will spend a majority
-      of their school life, especially in their early years at the school.
+      highlighting key locations where the students will spend a majority of
+      their school life, especially in their early years at the school. From the
+      classrooms to the library, the tour provides a general idea of life in NUS
+      High School.
     </p>
     <div style="height: 20px"></div>
     <p>
