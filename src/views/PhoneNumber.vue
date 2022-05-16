@@ -128,13 +128,13 @@ export default {
           if (slotsRemaining >= parseInt(this.booking.numPpl)) {
             DbService.addParticipant(
               this.booking.selectedTiming + '_' + this.booking.selectedRoute,
-              this.phoneNumber,
+              parseInt(this.phoneNumber),
               parseInt(this.booking.numPpl)
             );
             console.log(this.booking);
             router.push('/booking-pass');
           } else {
-            router.push('/fail');
+            router.push('/slots-taken');
           }
         })
         .catch(() => {

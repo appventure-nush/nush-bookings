@@ -70,9 +70,13 @@ export default {
 
   async getTourbyParticipant(phone_no, pax) {
     const docRef = collection(db, 'tours');
+    console.log('lol');
+    const map = new Map();
+    map.set('phone_no', phone_no);
+    map.set('pax', pax);
     const q = query(
       docRef,
-      where('participants', 'arrayContains', {
+      where('participants', 'array-contains', {
         phone_no: phone_no,
         pax: pax,
       })
