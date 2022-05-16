@@ -4,8 +4,7 @@
     <h1>NUS High School Tour</h1>
     <p>
       The tour will take roughly 30 minutes, giving you an overview of our
-      school's main facilities from the chemistry and computer labs to the
-      student lounge.
+      school's main facilities from the labs, to the lounge to the library.
     </p>
     <div style="height: 20px"></div>
     <p>
