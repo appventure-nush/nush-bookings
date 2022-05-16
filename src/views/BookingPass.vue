@@ -87,7 +87,7 @@ export default {
     cancelBooking() {
       // TODO: if i can manage to get tour ID
       this.showDialog = false;
-      router.push('../');
+      router.push('/booking-cancel');
     },
   },
 };
