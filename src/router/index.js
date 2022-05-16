@@ -6,7 +6,6 @@ import NumberOfPeople from '@/views/NumberOfPeople.vue';
 import PhoneNumber from '@/views/PhoneNumber.vue';
 import SlotsTaken from '@/views/SlotsTaken.vue';
 import BookingPass from '@/views/BookingPass.vue';
-import BookingCancel from '@/views/BookingCancel.vue';
 
 const routes = [
   {
@@ -36,10 +35,6 @@ const routes = [
   {
     path: '/booking-pass',
     component: BookingPass,
-  },
-  {
-    path: '/booking-cancel',
-    component: BookingCancel,
   },
 ];
 

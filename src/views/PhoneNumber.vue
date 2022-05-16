@@ -112,6 +112,8 @@ export default {
       window.confirmRes
         .confirm(this.otp)
         .then(() => {
+          console.log('AUTHENTICATED USER');
+          console.log(getAuth().currentUser);
           const router = useRouter();
           this.page = 'processing';
           const fromDb = DbService.getTour(

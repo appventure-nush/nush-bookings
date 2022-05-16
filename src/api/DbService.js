@@ -87,7 +87,7 @@ export default {
       );
     });
 
-    return compliedData;
+    return compliedData[0];
   },
 
   async addParticipant(tour_id, phone_no, pax) {

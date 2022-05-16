@@ -2,7 +2,6 @@
   <Transition>
     <Dialog
       v-if="showDialog"
-      v-show="bookingDone"
       title="Cancel booking?"
       message="Are you sure you want to cancel your booking? Your slot will be freed up for others."
       @yes="cancelBooking"
@@ -13,39 +12,28 @@
     <div style="display: flex; align-items: start">
       <img src="@/assets/img/school_logo.png" height="54" width="100" />
       <div class="spacer"></div>
-      <i v-show="bookingDone" class="person s24 regular"></i>
-      <span v-show="bookingDone" class="num-ppl">{{ numPpl }}</span>
+      <i class="person s24 regular"></i>
+      <span class="num-ppl">{{ numPpl }}</span>
     </div>
     <div class="spacer"></div>
-    <h1 v-show="bookingDone">You're all set!</h1>
-    <h1 v-show="!bookingDone">An error has occurred...</h1>
-    <h2 v-show="!bookingDone">
-      Oops... Seems like you have yet to register. Return to the main page to
-      register!
+    <h1>You're all set!</h1>
+    <h2>
+      Your NUS High tour starts at the {{ location }} at {{ timingFormatted }}.
+      <br />
+      Tour ID: {{ selectedRoute + '_' + selectedTiming }}
     </h2>
-    <div v-show="!bookingDone" class="cancel-btn" @click="returnMainPage">
-      Return to Main Page
-    </div>
-    <h2 v-show="bookingDone">
-      Your NUS High tour is booked for {{ tourTiming }}
-    </h2>
-    <h2 v-show="bookingDone">Phone Number: {{ phoneNumber }}</h2>
-    <h2 v-show="bookingDone">Tour ID: {{ tourID }}</h2>
-    <span v-show="bookingDone" class="small-text">
-      Show this screen to your tour guide
-    </span>
+    <span class="small-text"> Show this screen to your tour guide </span>
     <div class="spacer"></div>
-    <div v-show="bookingDone" class="cancel-btn" @click="showDialog = true">
-      Cancel booking
-    </div>
+    <div class="cancel-btn" @click="showDialog = true">Cancel booking</div>
   </div>
 </template>
 
 <script>
+import { getAuth } from 'firebase/auth';
 import Dialog from '../components/Dialog.vue';
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
 import DbService from '../api/DbService';
+import { formatTiming } from '../utils/formatTiming';
+import { getTourLocation } from '../utils/tourLocation';
 
 export default {
   components: {
@@ -54,38 +42,49 @@ export default {
   data() {
     return {
       showDialog: false,
-      tourTiming: '2:00pm',
-      bookingDone: true,
-      tourID: '',
+      numPpl: 0,
+      selectedTiming: 200,
+      selectedRoute: 'A1',
     };
   },
-  setup() {
-    const router = useRouter();
-    const phoneNumber = ref(localStorage.getItem('phoneNumber'));
-    const numPpl = ref(localStorage.getItem('numPpl'));
-    function returnMainPage() {
-      router.push('../');
-    }
-    return {
-      phoneNumber,
-      numPpl,
-      returnMainPage,
-    };
+  computed: {
+    timingFormatted() {
+      return formatTiming(this.selectedTiming);
+    },
+    location() {
+      return getTourLocation(this.selectedRoute);
+    },
   },
-  async created() {
-    this.tourID = await DbService.getTourbyParticipant(
-      parseInt(this.phoneNumber),
-      parseInt(this.numPpl)
-    );
-    console.log(this.tourID);
-    if (this.phoneNumber == null || this.numPpl == null) {
-      this.bookingDone = false;
-    }
+  created() {
+    (async () => {
+      console.log(getAuth().currentUser);
+      if (getAuth().currentUser == null) {
+        this.$router.push('/');
+        return;
+      }
+      const { phoneNumber } = getAuth().currentUser;
+      this.numPpl = parseInt(localStorage.getItem('numPpl')); // not ideal but should work most of the time :/
+      const bookingInfo = await DbService.getTourbyParticipant(
+        phoneNumber,
+        this.numPpl
+      );
+      console.log('INFO');
+      console.log(bookingInfo);
+      this.selectedTiming = bookingInfo.selectedTiming;
+      this.selectedRoute = bookingInfo.selectedRoute;
+    })();
   },
   methods: {
-    cancelBooking() {
-      // TODO: if i can manage to get tour ID
+    async cancelBooking() {
+      const tourId = this.selectedTiming + '_' + this.selectedRoute;
+      await DbService.deleteParticipant(
+        tourId,
+        getAuth().currentUser.phoneNumber,
+        this.numPpl
+      );
       this.showDialog = false;
+      this.$router.push('/');
+      alert('Successfully cancelled booking');
     },
   },
 };
