@@ -2,8 +2,10 @@
   <div class="number-of-people">
     <h1>Number of people</h1>
     <p>
-      Tour selected: {{ titleFormatted }}. You can sign up for the rest of your
-      family. How many people are you signing up for?
+      Tour selected: {{ titleFormatted }}.<br />
+      <br />
+      You can sign up for the rest of your family. How many people are you
+      signing up for?
     </p>
     <div style="align-self: center">
       <NumberSelect v-model="numPpl" :maxNum="slots_free" />
