@@ -3,7 +3,7 @@
     <h1>Credits</h1>
     <p>
       This site was built by a team of Year 5 students at NUS High School,
-      composed of Lee Jia Jie, Dave Tan Kai Xun, Lim Teck Kong and Prannaya
+      composed of Lee Jia Jie, Tan Kai Xun Dave, Lim Teck Kong and Prannaya
       Gupta, with support from the NUS High Students' Council and AppVenture,
       the Computer Science Interest Group of NUS High.
     </p>
