@@ -5,28 +5,33 @@
       <h4 v-show="afternoon == false">Morning</h4>
       <div class="grid">
         <TimingCard
-          v-for="timing in morning_time_slot"
-          :key="timing"
-          :timing="timing.time"
-          :subtitle="`${timing.slots} slots left`"
-          :selected="timing === sel"
-          @click="sel = timing"
+          v-for="slot in morning_time_slot"
+          :key="slot"
+          :timing="slot.time"
+          :subtitle="`${slot.slots} slots left`"
+          :selected="slot.time === sel"
+          @click="sel = slot.time"
         />
       </div>
       <h4 style="margin-top: 36px">Afternoon</h4>
       <div class="grid">
         <TimingCard
-          v-for="timing in afternoon_time_slot"
-          :key="timing"
-          :timing="timing.time - 1200"
-          :subtitle="`${timing.slots} slots left`"
-          :selected="timing === sel"
-          @click="sel = timing"
+          v-for="slot in afternoon_time_slot"
+          :key="slot"
+          :timing="slot.time - 1200"
+          :subtitle="`${slot.slots} slots left`"
+          :selected="slot.time === sel"
+          @click="sel = slot.time"
         />
       </div>
     </div>
     <div style="margin-top: 30px">
-      <Steps :numSteps="5" :currentStep="1" @continue="saveTimingAndContinue" />
+      <Steps
+        :numSteps="5"
+        :currentStep="1"
+        :canContinue="sel != undefined"
+        @continue="saveTimingAndContinue"
+      />
     </div>
   </div>
 </template>
@@ -68,10 +73,10 @@ export default {
   },
   setup() {
     const router = useRouter();
-    const sel = ref(0);
+    const sel = ref(parseInt(localStorage.getItem('selectedTiming')));
 
     function saveTimingAndContinue() {
-      localStorage.setItem('selectedTiming', sel.value.time);
+      localStorage.setItem('selectedTiming', sel.value);
       router.push('/select-route');
     }
 

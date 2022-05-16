@@ -30,7 +30,7 @@ export default {
   },
   setup() {
     const router = useRouter();
-    const numPpl = ref(1);
+    const numPpl = ref(parseInt(localStorage.getItem('numPpl')));
 
     function saveNumPplAndContinue() {
       localStorage.setItem('numPpl', numPpl.value);

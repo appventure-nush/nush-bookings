@@ -95,7 +95,6 @@ export default {
       // save phone number, send otp, continue to verification page
       this.invalidPhoneNumber = !/^\+65[0-9]{8}$/.test(this.phoneNumber);
       if (this.invalidPhoneNumber) return;
-      localStorage.setItem('phoneNumber', this.phoneNumber);
       signInWithPhoneNumber(auth, this.phoneNumber, window.verifier)
         .then((result) => {
           this.page = 'enterOTP';

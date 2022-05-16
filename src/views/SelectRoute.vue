@@ -45,7 +45,7 @@ export default {
   },
   setup() {
     const router = useRouter();
-    const sel = ref(localStorage.getItem('selectedTiming'));
+    const sel = ref(localStorage.getItem('selectedRoute'));
 
     const selectedTiming = localStorage.getItem('selectedTiming');
     const timingFormatted = formatTiming(selectedTiming);
