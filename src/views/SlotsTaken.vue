@@ -2,7 +2,10 @@
   <div class="slots-taken">
     <i class="emoji_sad s20 regular"></i>
     <p>Unfortunately, slots for that timing have already been taken.</p>
-    <MyButton text="Try again" @click="$router.push('/select-timing')" />
+    <MyButton
+      text="Try again"
+      :onClick="() => $router.push('/select-timing')"
+    />
   </div>
 </template>
 

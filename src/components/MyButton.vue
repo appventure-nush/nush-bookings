@@ -1,8 +1,17 @@
 <template>
-  <div class="button" :class="{ disabled }">{{ text }}</div>
+  <div
+    class="button"
+    :class="{ disabled, down: isDown }"
+    @pointerdown="onDown"
+    @pointerup="onUp"
+    @pointercancel="onCancel"
+  >
+    {{ text }}
+  </div>
 </template>
 
 <script>
+// DONT use @click event listener since have to wait for animation to end
 export default {
   props: {
     text: String,
@@ -10,9 +19,33 @@ export default {
       type: Boolean,
       default: false,
     },
+    onClick: {
+      type: Function,
+      required: true,
+    },
   },
-  setup() {
-    return {};
+  data() {
+    return {
+      clickStart: 0,
+      isDown: false,
+    };
+  },
+  methods: {
+    onDown() {
+      if (this.disabled) return;
+      this.isDown = true;
+      this.clickStart = Date.now();
+    },
+    onUp() {
+      if (this.disabled) return;
+      setTimeout(() => {
+        this.onClick();
+        this.isDown = false;
+      }, 600 - (Date.now() - this.clickStart));
+    },
+    onCancel() {
+      this.isDown = false;
+    },
   },
 };
 </script>
@@ -32,12 +65,12 @@ export default {
   user-select: none;
   cursor: pointer;
 
-  background-image: linear-gradient(45deg, #3865a8, #00a499);
-  background-size: 200% 100%;
+  background-image: linear-gradient(90deg, #3865a8 0 60%, #00a499);
+  background-size: 400% 100%;
   background-position: 100%;
-  transition: background-position 400ms;
+  transition: background-position 2s;
 
-  &:active {
+  &.down {
     background-position: 0% 0%;
   }
 

@@ -10,7 +10,7 @@
     <MyButton
       text="Continue"
       :disabled="!canContinue"
-      @click="if (canContinue) $emit('continue');"
+      :onClick="() => canContinue && $emit('continue')"
     />
   </div>
 </template>

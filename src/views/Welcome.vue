@@ -12,7 +12,7 @@
       up for more than one timing.
     </p>
     <div style="height: 50px"></div>
-    <MyButton text="Sign up" @click="signUp" />
+    <MyButton text="Sign up" :onClick="signUp" />
     <div class="spacer"></div>
     <span class="credits">By Jia Jie, Dave, Teck Kong, Prannaya</span>
   </div>
