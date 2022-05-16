@@ -56,13 +56,11 @@ export default {
     },
   },
   created() {
-    (async () => {
-      console.log(getAuth().currentUser);
-      if (getAuth().currentUser == null) {
-        this.$router.push('/');
-        return;
-      }
-      const { phoneNumber } = getAuth().currentUser;
+    this.loadBookingInfo();
+  },
+  methods: {
+    async loadBookingInfo() {
+      let { phoneNumber } = getAuth().currentUser;
       this.numPpl = parseInt(localStorage.getItem('numPpl')); // not ideal but should work most of the time :/
       const bookingInfo = await DbService.getTourbyParticipant(
         phoneNumber,
@@ -72,9 +70,7 @@ export default {
       console.log(bookingInfo);
       this.selectedTiming = bookingInfo.selectedTiming;
       this.selectedRoute = bookingInfo.selectedRoute;
-    })();
-  },
-  methods: {
+    },
     async cancelBooking() {
       const tourId = this.selectedTiming + '_' + this.selectedRoute;
       await DbService.deleteParticipant(

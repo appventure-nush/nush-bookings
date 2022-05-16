@@ -5,7 +5,7 @@
       type="tel"
       pattern="[0-9]{4} [0-9]{4}"
       :value="modelValue"
-      @input="$emit('update:modelValue', $event.target.value)"
+      @input="$emit('update:modelValue', '+65' + $event.target.value)"
     />
   </div>
   <span v-if="error" class="error-msg">{{ error }}</span>
