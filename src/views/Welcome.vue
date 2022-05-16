@@ -3,9 +3,9 @@
     <img src="@/assets/img/school_logo.png" height="54" width="100" />
     <h1>NUS High School Tour</h1>
     <p>
-      The tour will take roughly 30 minutes and go from Pote nti integer
-      elementum id nullam in nunc ultrices morbi mauris. Amet, lacus erat
-      malesuada.
+      The tour will take roughly 30 minutes and run throughout the school,
+      highlighting key locations where the students will spend a majority
+      of their school life, especially in their early years at the school.
     </p>
     <div style="height: 20px"></div>
     <p>
