@@ -18,11 +18,21 @@
     <div class="spacer"></div>
     <h1>You're all set!</h1>
     <h2>
-      Your NUS High tour starts at the {{ location }} at {{ timingFormatted }}.
-      <br />
-      Tour ID: {{ selectedRoute + '_' + selectedTiming }}
+      Your NUS High tour is booked for {{ timingFormatted }}.
+      <span
+        style="
+          display: block;
+          font-size: 16px;
+          font-weight: 500;
+          margin-top: 60px;
+        "
+      >
+        Venue: {{ location }}
+        <br />
+        Tour ID: {{ selectedRoute + '_' + selectedTiming }}
+      </span>
     </h2>
-    <span class="small-text"> Show this screen to your tour guide </span>
+    <span class="small-text"> Show this page to your tour guide </span>
     <div class="spacer"></div>
     <div class="cancel-btn" @click="showDialog = true">Cancel booking</div>
   </div>
@@ -66,10 +76,15 @@ export default {
         phoneNumber,
         this.numPpl
       );
+      if (bookingInfo == null) {
+        // authenticated but no booking for some reason
+        await getAuth().signOut();
+        return;
+      }
       console.log('INFO');
       console.log(bookingInfo);
-      this.selectedTiming = bookingInfo.selectedTiming;
-      this.selectedRoute = bookingInfo.selectedRoute;
+      this.selectedTiming = bookingInfo.time.integerValue;
+      this.selectedRoute = bookingInfo.route.stringValue;
     },
     async cancelBooking() {
       const tourId = this.selectedTiming + '_' + this.selectedRoute;
@@ -78,6 +93,7 @@ export default {
         getAuth().currentUser.phoneNumber,
         this.numPpl
       );
+      await getAuth().signOut();
       this.showDialog = false;
       this.$router.push('/');
       alert('Successfully cancelled booking');
@@ -113,8 +129,7 @@ h2 {
   font-size: 22px;
   font-weight: 700;
   opacity: 0.8;
-  margin-bottom: 28px;
-  margin-right: 20px;
+  margin-bottom: 16px;
 }
 
 .small-text {

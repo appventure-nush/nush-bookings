@@ -50,7 +50,8 @@ router.beforeEach((to, from, next) => {
     else next();
   } else {
     // is authenticated
-    next('/booking-pass');
+    if (to.path !== '/booking-pass') next('/booking-pass');
+    else next();
   }
 });
 

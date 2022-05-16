@@ -4,7 +4,7 @@
     <input
       type="tel"
       pattern="[0-9]{4} [0-9]{4}"
-      :value="modelValue"
+      :value="modelValue.slice(3)"
       @input="$emit('update:modelValue', '+65' + $event.target.value)"
     />
   </div>

@@ -18,7 +18,7 @@
   <div v-else-if="page === 'enterOTP'" class="page">
     <h1>Verification</h1>
     <p>
-      A 6-digit OTP was sent to <b>+65{{ phoneNumber }}</b
+      A 6-digit OTP was sent to <b>{{ phoneNumber }}</b
       >. Enter it below:
     </p>
     <input
@@ -93,7 +93,7 @@ export default {
   methods: {
     submitPhoneNumber() {
       // save phone number, send otp, continue to verification page
-      this.invalidPhoneNumber = !/^[0-9]{8}$/.test(this.phoneNumber);
+      this.invalidPhoneNumber = !/^\+65[0-9]{8}$/.test(this.phoneNumber);
       if (this.invalidPhoneNumber) return;
       localStorage.setItem('phoneNumber', this.phoneNumber);
       signInWithPhoneNumber(auth, this.phoneNumber, window.verifier)
