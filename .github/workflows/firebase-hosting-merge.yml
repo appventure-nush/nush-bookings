@@ -26,15 +26,15 @@ jobs:
       - name: Install node
         uses: actions/setup-node@master
       - name: Install dependencies
-        run: cd client && npm ci
+        run: npm ci
       - name: Lint
-        run: cd client && npm run lint
+        run: npm run lint
       - name: Build
-        run: cd client && npm run build
-      - name: Deploy Hermes with Firebase
+        run: npm run build
+      - name: Deploy NUSH Open House Tours with Firebase
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_HERMES_BBE43 }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_NUSH_OPEN_HOUSE_TOURS }}'
           channelId: live
-          projectId: hermes-bbe43
+          projectId: nush-open-house-tours
