@@ -124,11 +124,11 @@ export default {
               (acc, p) => acc + p.pax,
               0
             );
-            // for (var j = 0; j < fromDb.participants.length; j++) {
-            //   slotsRemaining -= fromDb.participants[j].pax;
-            // }
           }
           console.log(slotsRemaining);
+
+          // watch animation for 2 seconds
+          await new Promise((r) => setTimeout(r, 2000));
 
           // submit booking
           if (slotsRemaining >= parseInt(this.booking.numPpl)) {
