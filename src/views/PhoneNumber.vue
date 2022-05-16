@@ -111,32 +111,36 @@ export default {
       if (this.invalidOTP) return;
       window.confirmRes
         .confirm(this.otp)
-        .then(() => {
-          console.log('AUTHENTICATED USER');
-          console.log(getAuth().currentUser);
-          const router = useRouter();
+        .then(async () => {
           this.page = 'processing';
-          const fromDb = DbService.getTour(
+          const fromDb = await DbService.getTour(
             this.booking.selectedTiming + '_' + this.booking.selectedRoute
           );
+          console.log('FETCHED TOUR');
+          console.log(fromDb);
           var slotsRemaining = 12;
           if (typeof fromDb.participants !== 'undefined') {
-            for (var j = 0; j < fromDb.participants.length; j++) {
-              slotsRemaining -= fromDb.participants[j].pax;
-            }
+            slotsRemaining -= fromDb.participants.reduce(
+              (acc, p) => acc + p.pax,
+              0
+            );
+            // for (var j = 0; j < fromDb.participants.length; j++) {
+            //   slotsRemaining -= fromDb.participants[j].pax;
+            // }
           }
+          console.log(slotsRemaining);
 
           // submit booking
           if (slotsRemaining >= parseInt(this.booking.numPpl)) {
-            DbService.addParticipant(
+            await DbService.addParticipant(
               this.booking.selectedTiming + '_' + this.booking.selectedRoute,
               this.phoneNumber,
               parseInt(this.booking.numPpl)
             );
             console.log(this.booking);
-            router.push('/booking-pass');
+            this.$router.push('/booking-pass');
           } else {
-            router.push('/slots-taken');
+            this.$router.push('/slots-taken');
           }
         })
         .catch(() => {
