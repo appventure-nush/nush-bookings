@@ -8,7 +8,7 @@
       @no="showDialog = false"
     />
   </Transition>
-  <div class="booking-pass">
+  <div class="booking-pass" :class="routeColor">
     <div style="display: flex; align-items: start">
       <img src="@/assets/img/school_logo.png" height="54" width="100" />
       <div class="spacer"></div>
@@ -64,6 +64,20 @@ export default {
     location() {
       return getTourLocation(this.selectedRoute);
     },
+    routeColor() {
+      switch (this.selectedRoute[0]) {
+        case 'A':
+          return 'red';
+        case 'B':
+          return 'blue';
+        case 'C':
+          return 'green';
+        case 'D':
+          return 'yellow';
+        default:
+          throw 'Invalid route';
+      }
+    },
   },
   created() {
     this.loadBookingInfo();
@@ -105,12 +119,27 @@ export default {
 <style lang="scss" scoped>
 .booking-pass {
   height: 100vh;
-  background-image: url('~@/assets/img/booking-pass-bg.png');
   background-size: cover;
   padding: 46px 50px 40px 50px;
   color: white;
   display: flex;
   flex-direction: column;
+
+  &.red {
+    background-image: url('~@/assets/img/pass-bg-red.png');
+  }
+
+  &.blue {
+    background-image: url('~@/assets/img/pass-bg-blue.png');
+  }
+
+  &.green {
+    background-image: url('~@/assets/img/pass-bg-green.png');
+  }
+
+  &.yellow {
+    background-image: url('~@/assets/img/pass-bg-yellow.png');
+  }
 }
 
 .num-ppl {
