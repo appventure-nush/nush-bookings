@@ -86,22 +86,6 @@ export default {
     async loadAllTours() {
       this.loading = true;
       var time_route_slots = [];
-      const fromDb = await DbService.getAllTours();
-      for (var i = 0; i < fromDb.length; i++) {
-        var obj = fromDb[i];
-        var slotRemaining = 12;
-        if (typeof obj.participants.arrayValue.values !== 'undefined') {
-          for (var j = 0; j < obj.participants.arrayValue.values.length; j++) {
-            slotRemaining -=
-              obj.participants.arrayValue.values[j].mapValue.fields.pax
-                .integerValue;
-          }
-        }
-        time_route_slots.push({
-          time: obj.time.integerValue,
-          slots: slotRemaining,
-        });
-      }
       var rawMorningTimings = [
         900, 910, 920, 930, 940, 950, 1000, 1010, 1020, 1030, 1040, 1050, 1100,
         1110, 1120, 1130, 1140, 1150,
@@ -117,6 +101,9 @@ export default {
 
       var morningTimings = [];
       var afternoonTimings = [];
+
+      let fromDb = [];
+
       if ((current.getMonth() == 4) & (current.getDate() == 21)) {
         if (current.getHours() > 12) {
           this.afternoon = true;
@@ -133,9 +120,32 @@ export default {
             afternoonTimings.push(rawAfternoonTimings[time]);
           }
         }
+        fromDb = await DbService.getTourAfterTime(timeNumeric);
       } else {
         morningTimings = rawMorningTimings;
         afternoonTimings = rawAfternoonTimings;
+        fromDb = await DbService.getAllTours();
+      }
+
+      console.log(fromDb);
+
+      for (var i = 0; i < fromDb.length; i++) {
+        var obj = fromDb[i];
+        var slotRemaining = 12;
+        if (
+          typeof obj.participants.arrayValue.values !== 'undefined' &&
+          typeof obj !== 'undefined'
+        ) {
+          for (var j = 0; j < obj.participants.arrayValue.values.length; j++) {
+            slotRemaining -=
+              obj.participants.arrayValue.values[j].mapValue.fields.pax
+                .integerValue;
+          }
+        }
+        time_route_slots.push({
+          time: obj.time.integerValue,
+          slots: slotRemaining,
+        });
       }
 
       var morning_time_slots = [];
