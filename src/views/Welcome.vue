@@ -26,7 +26,7 @@
     <MyButton text="Sign up" :onClick="signUp" />
     <div class="spacer"></div>
     <span class="credits" @click="showDialog = true">
-      By Jia Jie, Dave, Teck Kong, Prannaya
+      By Jia Jie, Dave, Teck Kong, Prannaya (Y5s)
     </span>
   </div>
 </template>
