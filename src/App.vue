@@ -54,4 +54,16 @@ body,
 #app {
   height: 100%;
 }
+
+// for dialog transition
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 400ms ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
 </style>

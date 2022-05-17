@@ -1,4 +1,15 @@
 <template>
+  <Transition>
+    <Dialog
+      v-if="showDialog"
+      title="About"
+      message="This site was built by a team of Year 5 students at NUS High School,
+      composed of Lee Jia Jie, Tan Kai Xun Dave, Lim Teck Kong and Prannaya
+      Gupta, with support from the NUS High Students' Council and AppVenture,
+      the Computer Science Interest Group of NUS High."
+      @close="showDialog = false"
+    />
+  </Transition>
   <div class="welcome">
     <img src="@/assets/img/school_logo.png" height="54" width="100" />
     <h1>NUS High School Tour</h1>
@@ -14,24 +25,30 @@
     <div style="height: 50px"></div>
     <MyButton text="Sign up" :onClick="signUp" />
     <div class="spacer"></div>
-    <span class="credits">By Jia Jie, Dave, Teck Kong, Prannaya</span>
+    <span class="credits" @click="showDialog = true">
+      By Jia Jie, Dave, Teck Kong, Prannaya
+    </span>
   </div>
 </template>
 
 <script>
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import MyButton from '@/components/MyButton.vue';
+import Dialog from '@/components/Dialog.vue';
 
 export default {
   components: {
     MyButton,
+    Dialog,
   },
   setup() {
     const router = useRouter();
+    const showDialog = ref(false);
     function signUp() {
       router.push('/select-timing');
     }
-    return { signUp };
+    return { showDialog, signUp };
   },
 };
 </script>

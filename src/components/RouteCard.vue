@@ -2,7 +2,7 @@
   <div class="route-card" :class="{ selected: selected }">
     <div class="route-details">
       <span class="title">{{ title }}</span>
-      <div style="height: 6px"></div>
+      <div style="height: 4px"></div>
       <span class="subtitle">{{ subtitle }}</span>
       <div class="circle"></div>
       <span class="subtitle2">{{ subtitle2 }}</span>
@@ -26,7 +26,7 @@ export default {
 .route-card {
   display: flex;
   align-items: center;
-  padding: 10px 16px 10px 16px;
+  padding: 10px 14px 8px 14px;
   border-radius: 10px;
   user-select: none;
   cursor: pointer;
@@ -44,21 +44,21 @@ export default {
 
   .title {
     color: rgba(#fff, 0.8);
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 700;
   }
 
   .subtitle,
   .subtitle2 {
     color: rgba(#fff, 0.8);
-    font-size: 14px;
+    font-size: 12px;
   }
 
   .circle {
     display: inline-block;
-    width: 6px;
-    height: 6px;
-    border-radius: 3px;
+    width: 4px;
+    height: 4px;
+    border-radius: 2px;
     background-color: rgba(#fff, 0.4);
     margin-left: 6px;
     margin-right: 6px;

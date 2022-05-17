@@ -87,7 +87,7 @@ export default {
   padding: 30px;
 
   h1 {
-    margin-bottom: 24px;
+    margin-bottom: 20px;
     font-size: 32px;
     font-weight: 700;
     background-image: linear-gradient(45deg, #00a499, #006760);
@@ -101,7 +101,7 @@ export default {
 
   p {
     margin-bottom: 60px;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 500;
   }
 }
