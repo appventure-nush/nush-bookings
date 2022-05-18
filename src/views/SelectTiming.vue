@@ -1,8 +1,9 @@
 <template>
   <div class="select-timing">
     <h1>Choose a time</h1>
-    <div class="column-scroll">
-      <h4 v-show="afternoon == false">Morning</h4>
+    <div v-if="loading" class="loading">Fetching timeslots...</div>
+    <div v-else class="column-scroll">
+      <h4 v-show="!afternoon">Morning</h4>
       <div class="grid">
         <TimingCard
           v-for="slot in morning_time_slot"
@@ -48,26 +49,8 @@ export default {
   data() {
     return {
       loading: false,
-      morning_time_slot: [
-        {
-          time: 900,
-          slots: 12,
-        },
-        {
-          time: 930,
-          slots: 8,
-        },
-      ],
-      afternoon_time_slot: [
-        {
-          time: 1400,
-          slots: 12,
-        },
-        {
-          time: 1430,
-          slots: 8,
-        },
-      ],
+      morning_time_slot: [],
+      afternoon_time_slot: [],
       afternoon: false,
     };
   },
@@ -233,5 +216,11 @@ export default {
   grid-template-columns: repeat(3, auto);
   column-gap: 16px;
   row-gap: 14px;
+}
+
+.loading {
+  flex-grow: 1;
+  display: grid;
+  place-items: center;
 }
 </style>
