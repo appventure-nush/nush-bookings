@@ -33,7 +33,9 @@
         Tour ID: {{ selectedRoute + '_' + selectedTiming }}
       </span>
     </h2>
-    <span class="small-text">Screenshot this page and show it to your tour guide</span>
+    <span class="small-text">
+      Screenshot this page and show it to your tour guide
+    </span>
     <div class="spacer"></div>
     <div class="cancel-btn" @click="showDialog = true">Cancel booking</div>
   </div>

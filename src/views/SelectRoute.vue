@@ -1,8 +1,11 @@
 <template>
   <div class="select-route">
     <h1>Choose a route</h1>
-    <p>Routes start and end differently but <b>all cover the same locations</b>.</p>
-    <div class="column-scroll">
+    <p>
+      Routes start and end differently but <b>all cover the same locations</b>.
+    </p>
+    <div v-if="loading" class="loading">Fetching routes...</div>
+    <div v-else class="column-scroll">
       <h4>{{ timingFormatted }}</h4>
       <div class="routes-list">
         <RouteCard
@@ -35,17 +38,12 @@ import Steps from '@/components/Steps.vue';
 import { formatTiming } from '@/utils/formatTiming';
 import DbService from '../api/DbService';
 
-const ROUTES = [
-  { id: 'A', title: 'Route A', location: 'Concourse', spotsLeft: 12 },
-  { id: 'B', title: 'Route B', location: 'Level 4', spotsLeft: 12 },
-  { id: 'C', title: 'Route C', location: 'Amphitheatre', spotsLeft: 12 },
-];
-
 export default {
   components: { RouteCard, Steps },
   data() {
     return {
-      routes: ROUTES,
+      routes: [],
+      loading: false,
     };
   },
   setup() {
@@ -69,6 +67,8 @@ export default {
   },
   methods: {
     async loadToursTime() {
+      this.loading = true;
+
       const fromDb = await DbService.getTourByTime(
         parseInt(this.selectedTiming)
       );
@@ -113,6 +113,7 @@ export default {
       }
 
       this.routes = routes_time;
+      this.loading = false;
     },
   },
   created() {
@@ -160,5 +161,11 @@ export default {
   display: flex;
   flex-direction: column;
   gap: 14px;
+}
+
+.loading {
+  flex-grow: 1;
+  display: grid;
+  place-items: center;
 }
 </style>
