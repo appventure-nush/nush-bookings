@@ -135,6 +135,7 @@ export default {
             );
             this.$router.push('/booking-pass');
           } else {
+            await auth.signOut();
             this.$router.push('/slots-taken');
           }
         })

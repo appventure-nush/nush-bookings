@@ -96,6 +96,7 @@ export default {
       if (bookingInfo == null) {
         // authenticated but no booking for some reason
         await getAuth().signOut();
+        this.$router.push('/');
         return;
       }
       this.selectedTiming = bookingInfo.time.integerValue;
