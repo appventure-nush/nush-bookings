@@ -23,6 +23,22 @@ const firebaseConfig = {
   measurementId: 'G-DR3Y1SZP1L',
 };
 
+// const firebaseConfig = {
+//   apiKey: 'AIzaSyDro1ZmzXaLwtRupcueqv7YCMS6KscnoDk',
+
+//   authDomain: 'nush-open-house-tours-spares.firebaseapp.com',
+
+//   projectId: 'nush-open-house-tours-spares',
+
+//   storageBucket: 'nush-open-house-tours-spares.appspot.com',
+
+//   messagingSenderId: '639472351452',
+
+//   appId: '1:639472351452:web:b457b3a265d6cf51e55c19',
+
+//   measurementId: 'G-LLZPNVLKYL',
+// };
+
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
@@ -46,6 +62,21 @@ export default {
     if (docSnap.exists()) {
       return docSnap.data();
     }
+  },
+
+  async getTourAfterTime(time) {
+    const docRef = collection(db, 'tours');
+    const q = query(docRef, where('time', '>=', time));
+    const querySnapshot = await getDocs(q);
+
+    var compliedData = [];
+    querySnapshot.forEach((doc) => {
+      compliedData = compliedData.concat(
+        doc._document.data.value.mapValue.fields
+      );
+    });
+
+    return compliedData;
   },
 
   async getTourByTime(time) {

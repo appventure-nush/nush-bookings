@@ -1,7 +1,7 @@
 <template>
   <div class="select-route">
     <h1>Choose a route</h1>
-    <p>Routes start and end differently but all cover the same locations.</p>
+    <p>Routes start and end differently but <b>all cover the same locations</b>.</p>
     <div class="column-scroll">
       <h4>{{ timingFormatted }}</h4>
       <div class="routes-list">
