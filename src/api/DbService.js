@@ -1,16 +1,12 @@
 import { initializeApp } from 'firebase/app';
 import {
-  collection,
   getFirestore,
   doc,
   getDoc,
-  getDocs,
-  query,
-  where,
   updateDoc,
-  arrayUnion,
-  arrayRemove,
+  deleteDoc,
   setDoc,
+  increment,
 } from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -23,164 +19,61 @@ const firebaseConfig = {
   measurementId: 'G-DR3Y1SZP1L',
 };
 
-// const firebaseConfig = {
-//   apiKey: 'AIzaSyDro1ZmzXaLwtRupcueqv7YCMS6KscnoDk',
-
-//   authDomain: 'nush-open-house-tours-spares.firebaseapp.com',
-
-//   projectId: 'nush-open-house-tours-spares',
-
-//   storageBucket: 'nush-open-house-tours-spares.appspot.com',
-
-//   messagingSenderId: '639472351452',
-
-//   appId: '1:639472351452:web:b457b3a265d6cf51e55c19',
-
-//   measurementId: 'G-LLZPNVLKYL',
-// };
-
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 export default {
   async getAllTours() {
-    const querySnapshot = await getDocs(collection(db, 'tours'));
-    var compliedData = [];
-    querySnapshot.forEach((doc) => {
-      compliedData = compliedData.concat(
-        doc._document.data.value.mapValue.fields
-      );
+    const toursDoc = await getDoc(doc(db, 'slotsLeft', 'slotsLeft'));
+    return toursDoc.data();
+  },
+
+  async getUserTour(phoneNumber) {
+    const tourDoc = await getDoc(doc(db, 'bookings', phoneNumber));
+    return tourDoc.data();
+  },
+
+  async submitBooking(tourId, phoneNumber, pax) {
+    const [timing, route] = tourId.split('_');
+    await updateDoc(doc(db, 'bookings', phoneNumber), {
+      tourId,
+      route,
+      timing: parseInt(timing),
+      pax,
     });
-
-    return compliedData;
-  },
-
-  async getTour(tour_id) {
-    const docRef = doc(db, 'tours', tour_id);
-    const docSnap = await getDoc(docRef);
-
-    if (docSnap.exists()) {
-      return docSnap.data();
-    }
-  },
-
-  async getTourAfterTime(time) {
-    const docRef = collection(db, 'tours');
-    const q = query(docRef, where('time', '>=', time));
-    const querySnapshot = await getDocs(q);
-
-    var compliedData = [];
-    querySnapshot.forEach((doc) => {
-      compliedData = compliedData.concat(
-        doc._document.data.value.mapValue.fields
-      );
-    });
-
-    return compliedData;
-  },
-
-  async getTourByTime(time) {
-    const docRef = collection(db, 'tours');
-    const q = query(docRef, where('time', '==', time));
-    const querySnapshot = await getDocs(q);
-
-    var compliedData = [];
-    querySnapshot.forEach((doc) => {
-      compliedData = compliedData.concat(
-        doc._document.data.value.mapValue.fields
-      );
-    });
-
-    return compliedData;
-  },
-
-  async getTourbyParticipant(phone_no, pax) {
-    const docRef = collection(db, 'tours');
-    const q = query(
-      docRef,
-      where('participants', 'array-contains', {
-        phone_no: phone_no,
-        pax: pax,
-      })
-    );
-    const querySnapshot = await getDocs(q);
-
-    var compliedData = [];
-    querySnapshot.forEach((doc) => {
-      compliedData = compliedData.concat(
-        doc._document.data.value.mapValue.fields
-      );
-    });
-
-    return compliedData[0];
-  },
-
-  async addParticipant(tour_id, phone_no, pax) {
-    const docRef = doc(db, 'tours', tour_id);
-    var newParticipant = {
-      phone_no: phone_no,
-      pax: pax,
-    };
-
-    await updateDoc(docRef, {
-      participants: arrayUnion(newParticipant),
+    await updateDoc(doc(db, 'slotsLeft', 'slotsLeft'), {
+      [tourId]: increment(-pax),
     });
   },
 
-  async deleteParticipant(tour_id, phone_no, pax) {
-    const docRef = doc(db, 'tours', tour_id);
-    var participant = {
-      phone_no: phone_no,
-      pax: pax,
-    };
-
-    await updateDoc(docRef, {
-      participants: arrayRemove(participant),
+  async cancelBooking(phoneNumber) {
+    const bookingDoc = await getDoc(doc(db, 'bookings', phoneNumber));
+    if (!bookingDoc.exists()) return;
+    const { tourId, pax } = bookingDoc.data();
+    await updateDoc(doc(db, 'slotsLeft', 'slotsLeft'), {
+      [tourId]: increment(pax),
     });
+    await deleteDoc(doc(db, 'bookings', phoneNumber));
   },
 
   async reinitialiseTours() {
-    const morningTimings = [
+    const timings = [
       900, 910, 920, 930, 940, 950, 1000, 1010, 1020, 1030, 1040, 1050, 1100,
       1110,
-    ];
-    const count = morningTimings.length;
-
-    const morningRoutes = ['A', 'B1', 'B2', 'C1', 'C2', 'D1', 'D2'];
-    const routeCount = morningRoutes.length;
-
-    for (let i = 0; i < count; i++) {
-      for (let j = 0; j < routeCount; j++) {
-        const tour_id = morningTimings[i] + '_' + morningRoutes[j];
-        await setDoc(doc(db, 'tours', tour_id), {
-          time: morningTimings[i],
-          tour_id: tour_id,
-          route: morningRoutes[j],
-          participants: [],
-        });
-      }
-    }
-
-    const afternoonTimings = [
+      //
       1120, 1130, 1140, 1150, 1200, 1210, 1220, 1230, 1240, 1250, 1300, 1310,
       1320, 1330, 1340, 1350, 1400, 1410, 1420, 1430, 1440, 1450, 1500, 1510,
       1520, 1530,
     ];
-    const afternoonCount = afternoonTimings.length;
+    const routesBefore1110 = ['A', 'B1', 'B2', 'C1', 'C2', 'D1', 'D2'];
+    const routesAfter1110 = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'D1', 'D2'];
 
-    const afternoonRoutes = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'D1', 'D2'];
-    const aftRouteCount = afternoonRoutes.length;
-
-    for (let i = 0; i < afternoonCount; i++) {
-      for (let j = 0; j < aftRouteCount; j++) {
-        const tour_id = afternoonTimings[i] + '_' + afternoonRoutes[j];
-        await setDoc(doc(db, 'tours', tour_id), {
-          time: afternoonTimings[i],
-          tour_id: tour_id,
-          route: afternoonRoutes[j],
-          participants: [],
-        });
+    const slotsLeftData = {};
+    for (const timing of timings) {
+      for (const route of timing <= 1110 ? routesBefore1110 : routesAfter1110) {
+        slotsLeftData[timing + '_' + route] = 12;
       }
     }
+    await setDoc(doc(db, 'slotsLeft', 'slotsLeft'), slotsLeftData);
   },
 };

@@ -87,28 +87,21 @@ export default {
   },
   methods: {
     async loadBookingInfo() {
+      // auth guard handled by router
       let { phoneNumber } = getAuth().currentUser;
-      this.numPpl = parseInt(localStorage.getItem('numPpl')); // not ideal but should work most of the time :/
-      const bookingInfo = await DbService.getTourbyParticipant(
-        phoneNumber,
-        this.numPpl
-      );
+      const bookingInfo = await DbService.getUserTour(phoneNumber);
       if (bookingInfo == null) {
         // authenticated but no booking for some reason
         await getAuth().signOut();
         this.$router.push('/');
         return;
       }
-      this.selectedTiming = bookingInfo.time.integerValue;
-      this.selectedRoute = bookingInfo.route.stringValue;
+      this.numPpl = bookingInfo.pax;
+      this.selectedTiming = bookingInfo.timing;
+      this.selectedRoute = bookingInfo.route;
     },
     async cancelBooking() {
-      const tourId = this.selectedTiming + '_' + this.selectedRoute;
-      await DbService.deleteParticipant(
-        tourId,
-        getAuth().currentUser.phoneNumber,
-        this.numPpl
-      );
+      await DbService.cancelBooking(getAuth().currentUser.phoneNumber);
       await getAuth().signOut();
       this.showDialog = false;
       this.$router.push('/');

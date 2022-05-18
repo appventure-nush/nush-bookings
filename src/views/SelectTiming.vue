@@ -3,26 +3,26 @@
     <h1>Choose a time</h1>
     <div v-if="loading" class="loading">Fetching timeslots...</div>
     <div v-else class="column-scroll">
-      <h4 v-show="!afternoon">Morning</h4>
-      <div class="grid">
+      <h4 v-if="showMorning">Morning</h4>
+      <div v-if="showMorning" class="grid">
         <TimingCard
-          v-for="slot in morning_time_slot"
-          :key="slot"
-          :timing="slot.time"
-          :subtitle="`${slot.slots} slots left`"
-          :selected="slot.time === sel"
-          @click="sel = slot.time"
+          v-for="(numSlots, timing) in morningSlots"
+          :key="timing"
+          :timing="parseInt(timing)"
+          :subtitle="`${numSlots} slots left`"
+          :selected="timing === sel"
+          @click="sel = timing"
         />
       </div>
       <h4 style="margin-top: 32px">Afternoon</h4>
       <div class="grid">
         <TimingCard
-          v-for="slot in afternoon_time_slot"
-          :key="slot"
-          :timing="slot.time - 1200"
-          :subtitle="`${slot.slots} slots left`"
-          :selected="slot.time === sel"
-          @click="sel = slot.time"
+          v-for="(numSlots, timing) in afternoonSlots"
+          :key="timing"
+          :timing="parseInt(timing) - 1200"
+          :subtitle="`${numSlots} slots left`"
+          :selected="timing === sel"
+          @click="sel = timing"
         />
       </div>
     </div>
@@ -49,9 +49,9 @@ export default {
   data() {
     return {
       loading: false,
-      morning_time_slot: [],
-      afternoon_time_slot: [],
-      afternoon: false,
+      morningSlots: [],
+      afternoonSlots: [],
+      showMorning: false,
     };
   },
   setup() {
@@ -68,121 +68,24 @@ export default {
   methods: {
     async loadAllTours() {
       this.loading = true;
-      var time_route_slots = [];
-      var rawMorningTimings = [
-        900, 910, 920, 930, 940, 950, 1000, 1010, 1020, 1030, 1040, 1050, 1100,
-        1110, 1120, 1130, 1140, 1150,
-      ];
 
-      var rawAfternoonTimings = [
-        1200, 1210, 1220, 1230, 1240, 1250, 1300, 1310, 1320, 1330, 1340, 1350,
-        1400, 1410, 1420, 1430, 1440, 1450, 1500, 1510, 1520, 1530,
-      ];
+      const now = new Date();
+      const currentTime = 800; // now.getHours() * 100 + now.getMinutes();
+      this.showMorning = currentTime < 1200;
 
-      const current = new Date();
-      const timeNumeric = current.getHours() * 100 + current.getMinutes();
+      const allTours = await DbService.getAllTours();
 
-      var morningTimings = [];
-      var afternoonTimings = [];
-
-      let fromDb = [];
-
-      if ((current.getMonth() == 4) & (current.getDate() == 21)) {
-        if (current.getHours() > 12) {
-          this.afternoon = true;
-        }
-
-        for (var time = 0; time < rawMorningTimings.length; time++) {
-          if (timeNumeric < rawMorningTimings[time]) {
-            morningTimings.push(rawMorningTimings[time]);
-          }
-        }
-
-        for (time = 0; time < rawAfternoonTimings.length; time++) {
-          if (timeNumeric < rawAfternoonTimings[time]) {
-            afternoonTimings.push(rawAfternoonTimings[time]);
-          }
-        }
-        fromDb = await DbService.getTourAfterTime(timeNumeric);
-      } else {
-        morningTimings = rawMorningTimings;
-        afternoonTimings = rawAfternoonTimings;
-        fromDb = await DbService.getAllTours();
+      const morningSlots = {};
+      const afternoonSlots = {};
+      for (const [tourId, numSlots] of Object.entries(allTours)) {
+        const timing = parseInt(tourId.split('_')[0]);
+        if (timing < currentTime) continue;
+        if (numSlots <= 0) continue;
+        const obj = timing < 1200 ? morningSlots : afternoonSlots;
+        obj[timing] = Math.max(obj[timing] ?? 0, numSlots);
       }
-
-      console.log(fromDb);
-
-      for (var i = 0; i < fromDb.length; i++) {
-        var obj = fromDb[i];
-        var slotRemaining = 12;
-        if (
-          typeof obj.participants.arrayValue.values !== 'undefined' &&
-          typeof obj !== 'undefined'
-        ) {
-          for (var j = 0; j < obj.participants.arrayValue.values.length; j++) {
-            slotRemaining -=
-              obj.participants.arrayValue.values[j].mapValue.fields.pax
-                .integerValue;
-          }
-        }
-        time_route_slots.push({
-          time: obj.time.integerValue,
-          slots: slotRemaining,
-        });
-      }
-
-      var morning_time_slots = [];
-      for (var t = 0; t < morningTimings.length; t++) {
-        morning_time_slots.push({
-          time: morningTimings[t],
-          slots: 0,
-        });
-      }
-      for (t = 0; t < morning_time_slots.length; t++) {
-        for (j = 0; j < time_route_slots.length; j++) {
-          if (morning_time_slots[t].time == time_route_slots[j].time) {
-            morning_time_slots[t].slots = Math.max(
-              morning_time_slots[t].slots,
-              time_route_slots[j].slots
-            );
-          }
-        }
-      }
-      var afternoon_time_slots = [];
-      for (t = 0; t < afternoonTimings.length; t++) {
-        afternoon_time_slots.push({
-          time: afternoonTimings[t],
-          slots: 0,
-        });
-      }
-      for (t = 0; t < afternoon_time_slots.length; t++) {
-        for (j = 0; j < time_route_slots.length; j++) {
-          if (afternoon_time_slots[t].time == time_route_slots[j].time) {
-            afternoon_time_slots[t].slots = Math.max(
-              afternoon_time_slots[t].slots,
-              time_route_slots[j].slots
-            );
-          }
-        }
-      }
-
-      var morning_times_with_non_zero_slots = [];
-      var afternoon_times_with_non_zero_slots = [];
-
-      for (t = 0; t < morning_time_slots.length; t++) {
-        if (morning_time_slots[t].slots != 0) {
-          morning_times_with_non_zero_slots.push(morning_time_slots[t]);
-        }
-      }
-
-      for (t = 0; t < afternoon_time_slots.length; t++) {
-        if (afternoon_time_slots[t].slots != 0) {
-          afternoon_times_with_non_zero_slots.push(afternoon_time_slots[t]);
-        }
-      }
-
-      this.morning_time_slot = morning_times_with_non_zero_slots;
-      this.afternoon_time_slot = afternoon_times_with_non_zero_slots;
+      this.morningSlots = morningSlots;
+      this.afternoonSlots = afternoonSlots;
       this.loading = false;
     },
   },
