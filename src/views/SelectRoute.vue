@@ -13,7 +13,7 @@
           :key="route.id"
           :title="route.title"
           :subtitle="'Starts at ' + route.location"
-          :subtitle2="route.spotsLeft + ' left'"
+          :subtitle2="route.pax + ' left'"
           :selected="route.id === sel"
           @click="sel = route.id"
         />
@@ -37,12 +37,12 @@ import RouteCard from '@/components/RouteCard.vue';
 import Steps from '@/components/Steps.vue';
 import { formatTiming } from '@/utils/formatTiming';
 import DbService from '../api/DbService';
+import { getTourLocation } from '../utils/tourLocation';
 
 export default {
   components: { RouteCard, Steps },
   data() {
     return {
-      routes: [],
       loading: false,
     };
   },
@@ -59,65 +59,36 @@ export default {
     }
 
     return {
+      routes: [],
       selectedTiming,
       timingFormatted,
       sel,
       saveRouteAndContinue,
     };
   },
+  created() {
+    this.loadRoutes();
+  },
   methods: {
-    async loadToursTime() {
+    async loadRoutes() {
       this.loading = true;
-
-      const fromDb = await DbService.getTourByTime(
-        parseInt(this.selectedTiming)
-      );
-
-      var routes_time = [];
-      for (var i = 0; i < fromDb.length; i++) {
-        var tour = fromDb[i];
-        var slotsRemaining = 12;
-        if (typeof tour.participants.arrayValue.values !== 'undefined') {
-          for (var j = 0; j < tour.participants.arrayValue.values.length; j++) {
-            slotsRemaining -=
-              tour.participants.arrayValue.values[j].mapValue.fields.pax
-                .integerValue;
-          }
-        }
-
-        var loc = 'temp';
-
-        switch (tour.route.stringValue[0]) {
-          case 'A':
-            loc = 'Theatrette';
-            break;
-          case 'B':
-            loc = 'Year 1 Classrooms';
-            break;
-          case 'C':
-            loc = 'The House Murals';
-            break;
-          case 'D':
-            loc = 'Ecopond';
-            break;
-        }
-
-        if (slotsRemaining > 0) {
-          routes_time.push({
-            title: 'Route ' + tour.route.stringValue,
-            id: tour.route.stringValue,
-            location: loc,
-            spotsLeft: slotsRemaining,
+      const selectedTiming = localStorage.getItem('selectedTiming');
+      const allTours = await DbService.getAllToursCached();
+      const routes = [];
+      for (const [tourId, numSlots] of Object.entries(allTours)) {
+        if (tourId.startsWith(selectedTiming) && numSlots > 0) {
+          const id = tourId.split('_')[1];
+          routes.push({
+            id,
+            title: 'Route ' + id,
+            location: getTourLocation(id),
+            pax: numSlots,
           });
         }
       }
-
-      this.routes = routes_time;
+      this.routes = routes.sort((a, b) => a.id.localeCompare(b.id));
       this.loading = false;
     },
-  },
-  created() {
-    this.loadToursTime();
   },
 };
 </script>

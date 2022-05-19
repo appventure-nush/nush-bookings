@@ -23,9 +23,18 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 export default {
+  data: {
+    cachedTours: null,
+  },
+
   async getAllTours() {
     const toursDoc = await getDoc(doc(db, 'slotsLeft', 'slotsLeft'));
-    return toursDoc.data();
+    this.data.cachedTours = toursDoc.data();
+    return this.data.cachedTours;
+  },
+
+  async getAllToursCached() {
+    return this.data.cachedTours ?? this.getAllTours();
   },
 
   async getUserTour(phoneNumber) {
@@ -35,7 +44,7 @@ export default {
 
   async submitBooking(tourId, phoneNumber, pax) {
     const [timing, route] = tourId.split('_');
-    await updateDoc(doc(db, 'bookings', phoneNumber), {
+    await setDoc(doc(db, 'bookings', phoneNumber), {
       tourId,
       route,
       timing: parseInt(timing),

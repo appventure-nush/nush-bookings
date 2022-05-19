@@ -112,24 +112,18 @@ export default {
         .confirm(this.otp)
         .then(async () => {
           this.page = 'processing';
-          const fromDb = await DbService.getTour(
-            this.booking.selectedTiming + '_' + this.booking.selectedRoute
-          );
-          var slotsRemaining = 12;
-          if (typeof fromDb.participants !== 'undefined') {
-            slotsRemaining -= fromDb.participants.reduce(
-              (acc, p) => acc + p.pax,
-              0
-            );
-          }
+          const allTours = await DbService.getAllTours();
+          const tourId =
+            this.booking.selectedTiming + '_' + this.booking.selectedRoute;
+          const slotsRemaining = allTours[tourId];
 
           // watch animation for 2 seconds
           await new Promise((r) => setTimeout(r, 2000));
 
           // submit booking
           if (slotsRemaining >= parseInt(this.booking.numPpl)) {
-            await DbService.addParticipant(
-              this.booking.selectedTiming + '_' + this.booking.selectedRoute,
+            await DbService.submitBooking(
+              tourId,
               this.phoneNumber,
               parseInt(this.booking.numPpl)
             );

@@ -8,7 +8,7 @@
       signing up for?
     </p>
     <div style="align-self: center">
-      <NumberSelect v-model="numPpl" :maxNum="slots_free" />
+      <NumberSelect v-model="numPpl" :maxNum="slotsFree" />
     </div>
     <div class="spacer"></div>
     <Steps
@@ -32,7 +32,7 @@ export default {
   components: { NumberSelect, Steps },
   data() {
     return {
-      slots_free: 4,
+      slotsFree: 4,
     };
   },
   setup() {
@@ -61,14 +61,11 @@ export default {
   },
   methods: {
     async checkSlots() {
-      const fromDb = await DbService.getTour(this.tour_id);
-      var slotsRemaining = 12;
-      if (typeof fromDb.participants !== 'undefined') {
-        for (var j = 0; j < fromDb.participants.length; j++) {
-          slotsRemaining -= fromDb.participants[j].pax;
-        }
-      }
-      this.slots_free = Math.min(4, slotsRemaining);
+      const allTours = await DbService.getAllToursCached();
+      const selectedRoute = localStorage.getItem('selectedRoute');
+      const selectedTiming = localStorage.getItem('selectedTiming');
+      const tourId = selectedTiming + '_' + selectedRoute;
+      this.slotsFree = Math.min(4, allTours[tourId]);
     },
   },
   created() {
