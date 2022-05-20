@@ -58,14 +58,6 @@ router.beforeEach((to, from, next) => {
     },
     (error) => {}
   );
-  // if (getAuth().currentUser == null) {
-  //   if (to.path === '/booking-pass') next('/');
-  //   else next();
-  // } else {
-  //   // is authenticated
-  //   if (to.path !== '/booking-pass') next('/booking-pass');
-  //   else next();
-  // }
 });
 
 export default router;

@@ -70,7 +70,7 @@ export default {
       this.loading = true;
 
       const now = new Date();
-      const currentTime = 800; // now.getHours() * 100 + now.getMinutes();
+      const currentTime = now.getHours() * 100 + now.getMinutes();
       this.showMorning = currentTime < 1200;
 
       const allTours = await DbService.getAllTours();

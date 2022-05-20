@@ -3,10 +3,10 @@ export function getTourLocation(routeId) {
     case 'A':
       return 'Theatrette';
     case 'B':
-      return 'Year 1 Classrooms';
+      return 'Year 1 Study Corner';
     case 'C':
-      return 'The House Murals';
+      return 'Back of Concourse';
     case 'D':
-      return 'Ecopond';
+      return 'Year 5 Study Corner';
   }
 }
