@@ -17,6 +17,7 @@ export default {
 <style lang="scss" scoped>
 .loading {
   display: flex;
+  max-height: 60px;
   gap: 16px;
 }
 

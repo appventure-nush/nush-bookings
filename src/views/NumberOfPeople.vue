@@ -2,9 +2,9 @@
   <div class="number-of-people">
     <h1>Number of people</h1>
     <p>
-      Tour selected: {{ titleFormatted }}.<br />
+      Tour selected: {{ formattedTiming }}.<br />
       <br />
-      You can sign up for the rest of your family. How many people are you
+      You can sign up for the rest of your family/group. How many people are you
       signing up for?
     </p>
     <div style="align-self: center">
@@ -12,8 +12,8 @@
     </div>
     <div class="spacer"></div>
     <Steps
-      :numSteps="5"
-      :currentStep="3"
+      :numSteps="3"
+      :currentStep="2"
       :canContinue="numPpl !== 0"
       @continue="saveNumPplAndContinue"
     />
@@ -41,31 +41,33 @@ export default {
 
     function saveNumPplAndContinue() {
       localStorage.setItem('numPpl', numPpl.value);
-      router.push('/phone-number');
+      router.push('/input-name');
     }
 
-    const selectedRoute = localStorage.getItem('selectedRoute');
-    const selectedTiming = localStorage.getItem('selectedTiming');
-
-    const titleFormatted =
-      formatTiming(selectedTiming).toUpperCase() + ', route ' + selectedRoute;
-
-    const tour_id = selectedTiming + '_' + selectedRoute;
+    const formattedTiming = formatTiming(
+      localStorage.getItem('selectedTiming')
+    ).toUpperCase();
 
     return {
-      tour_id,
-      titleFormatted,
       numPpl,
+      formattedTiming,
       saveNumPplAndContinue,
     };
   },
   methods: {
     async checkSlots() {
-      const allTours = await DbService.getAllToursCached();
-      const selectedRoute = localStorage.getItem('selectedRoute');
       const selectedTiming = localStorage.getItem('selectedTiming');
-      const tourId = selectedTiming + '_' + selectedRoute;
-      this.slotsFree = Math.min(4, allTours[tourId]);
+      const allTours = await DbService.getAllToursCached();
+      const possibleGroups = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+      let slotsFree = 0;
+      for (const group of possibleGroups) {
+        const remainingSlots = allTours[selectedTiming + '_' + group];
+        if (remainingSlots > slotsFree) {
+          slotsFree = remainingSlots;
+        }
+        if (slotsFree >= 4) break;
+      }
+      this.slotsFree = Math.min(4, slotsFree);
     },
   },
   created() {

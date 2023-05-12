@@ -1,10 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { getAuth } from 'firebase/auth';
 import Welcome from '@/views/Welcome.vue';
 import SelectTiming from '@/views/SelectTiming.vue';
-import SelectRoute from '@/views/SelectRoute.vue';
 import NumberOfPeople from '@/views/NumberOfPeople.vue';
-import PhoneNumber from '@/views/PhoneNumber.vue';
+import InputName from '@/views/InputName.vue';
 import SlotsTaken from '@/views/SlotsTaken.vue';
 import BookingPass from '@/views/BookingPass.vue';
 
@@ -18,16 +16,12 @@ const routes = [
     component: SelectTiming,
   },
   {
-    path: '/select-route',
-    component: SelectRoute,
-  },
-  {
     path: '/num-people',
     component: NumberOfPeople,
   },
   {
-    path: '/phone-number',
-    component: PhoneNumber,
+    path: '/input-name',
+    component: InputName,
   },
   {
     path: '/slots-taken',
@@ -45,19 +39,14 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  getAuth().onAuthStateChanged(
-    (user) => {
-      if (user == null) {
-        if (to.path === '/booking-pass') next('/');
-        else next();
-      } else {
-        // is authenticated
-        if (to.path !== '/booking-pass') next('/booking-pass');
-        else next();
-      }
-    },
-    (error) => {}
-  );
+  if (localStorage.getItem('bookingId') != null) {
+    // already made booking
+    if (to.path !== '/booking-pass') next('/booking-pass');
+    else next();
+  } else {
+    if (to.path === '/booking-pass') next('/');
+    else next();
+  }
 });
 
 export default router;

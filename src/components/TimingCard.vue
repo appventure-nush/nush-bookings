@@ -28,10 +28,11 @@ export default {
   flex-direction: column;
   padding: 8px 12px 8px 12px;
   border-radius: 10px;
+  border: 1px solid #4e4e4e;
   user-select: none;
   cursor: pointer;
 
-  border: 1px solid #4e4e4e;
+  transition: background-color 200ms ease-in-out;
 
   &.selected {
     border-color: transparent;

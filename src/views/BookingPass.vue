@@ -28,13 +28,12 @@
           margin-top: 60px;
         "
       >
-        Venue: {{ location }}
-        <br />
-        Tour ID: {{ selectedRoute + '_' + selectedTiming }}
+        Tour ID: {{ selectedTiming + '_' + groupId }}
       </span>
     </h2>
     <span class="small-text">
-      Screenshot this page and show it to your tour guide
+      Screenshot this page and show it to your tour guide. Please report 5
+      minutes early so the tour can start on time.
     </span>
     <div class="spacer"></div>
     <div class="cancel-btn" @click="showDialog = true">Cancel booking</div>
@@ -42,7 +41,6 @@
 </template>
 
 <script>
-import { getAuth } from 'firebase/auth';
 import Dialog from '../components/Dialog.vue';
 import DbService from '../api/DbService';
 import { formatTiming } from '../utils/formatTiming';
@@ -57,18 +55,18 @@ export default {
       showDialog: false,
       numPpl: 0,
       selectedTiming: 200,
-      selectedRoute: 'A1',
+      groupId: 'A1',
     };
   },
   computed: {
     timingFormatted() {
       return formatTiming(this.selectedTiming);
     },
-    location() {
-      return getTourLocation(this.selectedRoute);
-    },
+    // location() {
+    //   return getTourLocation(this.groupId);
+    // },
     routeColor() {
-      switch (this.selectedRoute[0]) {
+      switch (this.groupId[0]) {
         case 'A':
           return 'red';
         case 'B':
@@ -87,22 +85,20 @@ export default {
   },
   methods: {
     async loadBookingInfo() {
-      // auth guard handled by router
-      let { phoneNumber } = getAuth().currentUser;
-      const bookingInfo = await DbService.getUserTour(phoneNumber);
-      if (bookingInfo == null) {
-        // authenticated but no booking for some reason
-        await getAuth().signOut();
-        this.$router.push('/');
-        return;
-      }
-      this.numPpl = bookingInfo.pax;
-      this.selectedTiming = bookingInfo.timing;
-      this.selectedRoute = bookingInfo.route;
+      this.numPpl = localStorage.getItem('numPpl');
+      const [timing, group] = localStorage.getItem('tourId').split('_');
+      this.selectedTiming = timing;
+      this.groupId = group;
     },
     async cancelBooking() {
-      await DbService.cancelBooking(getAuth().currentUser.phoneNumber);
-      await getAuth().signOut();
+      await DbService.cancelBooking(
+        localStorage.getItem('tourId'),
+        localStorage.getItem('bookingId')
+      );
+      localStorage.removeItem('selectedTiming');
+      localStorage.removeItem('numPpl');
+      localStorage.removeItem('bookingId');
+      localStorage.removeItem('tourId');
       this.showDialog = false;
       this.$router.push('/');
       alert('Successfully cancelled booking');
@@ -171,7 +167,7 @@ h2 {
   border-radius: 8px;
   cursor: pointer;
   user-select: none;
-  transition: background-color 200ms;
+  transition: background-color 200ms ease-in-out;
 
   &:active {
     background-color: rgba(#000, 0.2);

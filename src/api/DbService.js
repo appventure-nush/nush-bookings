@@ -9,6 +9,7 @@ import {
   increment,
   collection,
   addDoc,
+  serverTimestamp,
 } from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -53,14 +54,18 @@ export default {
   },
 
   async submitBooking(tourId, name, pax) {
-    const doc = await addDoc(collection(db, 'tourGroups', tourId, 'bookings'), {
-      name,
-      pax,
-    });
+    const bookingDoc = await addDoc(
+      collection(db, 'tourGroups', tourId, 'bookings'),
+      {
+        name,
+        pax,
+        timestamp: serverTimestamp(),
+      }
+    );
     await updateDoc(doc(db, 'slotsLeft', 'slotsLeft'), {
       [tourId]: increment(-pax),
     });
-    return doc.id;
+    return bookingDoc.id;
   },
 
   async cancelBooking(tourId, bookingId) {
@@ -82,13 +87,13 @@ export default {
       1200, 1210, 1220, 1230, 1240, 1250, 1300, 1310, 1320, 1330, 1340, 1350,
       1400, 1410, 1420, 1430, 1440, 1450, 1500, 1510, 1520, 1530,
     ];
-    const routesBefore1200 = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
-    const routesAfter1200 = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+    const groupsBefore1200 = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+    const groupsAfter1200 = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 
     const slotsLeftData = {};
     for (const timing of timings) {
-      for (const route of timing < 1200 ? routesBefore1200 : routesAfter1200) {
-        const slot = timing + '_' + route;
+      for (const group of timing < 1200 ? groupsBefore1200 : groupsAfter1200) {
+        const slot = timing + '_' + group;
         slotsLeftData[slot] = 12;
         const emptyData = {};
         await setDoc(doc(db, 'tourGroups', slot), emptyData);

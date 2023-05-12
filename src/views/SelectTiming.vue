@@ -6,29 +6,29 @@
       <h4 v-if="showMorning">Morning</h4>
       <div v-if="showMorning" class="grid">
         <TimingCard
-          v-for="(numSlots, timing) in morningSlots"
+          v-for="[timing, numSlots] in morningSlots"
           :key="timing"
-          :timing="parseInt(timing)"
+          :timing="timing"
           :subtitle="`${numSlots} slots left`"
-          :selected="timing === sel"
-          @click="sel = timing"
+          :selected="timing == sel"
+          @click="selectTiming(timing)"
         />
       </div>
       <h4 style="margin-top: 32px">Afternoon</h4>
       <div class="grid">
         <TimingCard
-          v-for="(numSlots, timing) in afternoonSlots"
+          v-for="[timing, numSlots] in afternoonSlots"
           :key="timing"
-          :timing="parseInt(timing) - 1200"
+          :timing="timing - 1200"
           :subtitle="`${numSlots} slots left`"
-          :selected="timing === sel"
-          @click="sel = timing"
+          :selected="timing == sel"
+          @click="selectTiming(timing)"
         />
       </div>
     </div>
     <div style="margin-top: 30px">
       <Steps
-        :numSteps="5"
+        :numSteps="3"
         :currentStep="1"
         :canContinue="sel !== 0"
         @continue="saveTimingAndContinue"
@@ -58,19 +58,23 @@ export default {
     const router = useRouter();
     const sel = ref(parseInt(localStorage.getItem('selectedTiming') ?? 0));
 
-    function saveTimingAndContinue() {
+    function selectTiming(timing) {
+      sel.value = timing;
       localStorage.setItem('selectedTiming', sel.value);
-      router.push('/select-route');
     }
 
-    return { sel, saveTimingAndContinue };
+    function saveTimingAndContinue() {
+      router.push('/num-people');
+    }
+
+    return { sel, selectTiming, saveTimingAndContinue };
   },
   methods: {
     async loadAllTours() {
       this.loading = true;
 
       const now = new Date();
-      const currentTime = now.getHours() * 100 + now.getMinutes();
+      const currentTime = (now.getHours() - 12) * 100 + now.getMinutes();
       this.showMorning = currentTime < 1200;
 
       const allTours = await DbService.getAllTours();
@@ -81,11 +85,11 @@ export default {
         const timing = parseInt(tourId.split('_')[0]);
         if (timing < currentTime) continue;
         if (numSlots <= 0) continue;
-        const obj = timing < 1200 ? morningSlots : afternoonSlots;
-        obj[timing] = Math.max(obj[timing] ?? 0, numSlots);
+        const list = timing < 1200 ? morningSlots : afternoonSlots;
+        list[timing] = Math.max(list[timing] ?? 0, numSlots);
       }
-      this.morningSlots = morningSlots;
-      this.afternoonSlots = afternoonSlots;
+      this.morningSlots = Object.entries(morningSlots);
+      this.afternoonSlots = Object.entries(afternoonSlots);
       this.loading = false;
     },
   },
