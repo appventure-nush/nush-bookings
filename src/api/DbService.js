@@ -1,3 +1,4 @@
+import { SlotFlags } from '@vue/shared';
 import { initializeApp } from 'firebase/app';
 import {
   getFirestore,
@@ -7,6 +8,8 @@ import {
   deleteDoc,
   setDoc,
   increment,
+  collection,
+  addDoc,
 } from 'firebase/firestore';
 
 const firebaseConfig = {
@@ -25,10 +28,12 @@ const db = getFirestore(app);
 export default {
   data: {
     cachedTours: null,
+    cachedTourID: null,
+    cachedBooking: null,
   },
 
   async getAllTours() {
-    const toursDoc = await getDoc(doc(db, 'slotsLeft', 'slotsLeft'));
+    const toursDoc = await getDoc(doc(db, 'tourGroups', 'slotsLeft'));
     this.data.cachedTours = toursDoc.data();
     return this.data.cachedTours;
   },
@@ -37,52 +42,104 @@ export default {
     return this.data.cachedTours ?? this.getAllTours();
   },
 
-  async getUserTour(phoneNumber) {
-    const tourDoc = await getDoc(doc(db, 'bookings', phoneNumber));
+  async getUserTour() {
+    const tourDoc = await getDoc(
+      doc(
+        db,
+        'tourGroups',
+        this.data.cachedTourID,
+        'bookings',
+        this.data.cachedBooking
+      )
+    );
     return tourDoc.data();
   },
 
-  async submitBooking(tourId, phoneNumber, pax) {
+  async submitBooking(tourId, name, pax) {
     const [timing, route] = tourId.split('_');
-    await setDoc(doc(db, 'bookings', phoneNumber), {
-      tourId,
-      route,
-      timing: parseInt(timing),
-      pax,
-    });
-    await updateDoc(doc(db, 'slotsLeft', 'slotsLeft'), {
+    const docRef = await addDoc(
+      collection(db, 'tourGroups', tourId, 'bookings'),
+      {
+        name,
+        pax,
+      }
+    );
+    await updateDoc(doc(db, 'tourGroups', 'slotsLeft'), {
       [tourId]: increment(-pax),
     });
+    this.data.cachedTourID = tourId;
+    this.data.cachedBooking = docRef.id;
   },
 
-  async cancelBooking(phoneNumber) {
-    const bookingDoc = await getDoc(doc(db, 'bookings', phoneNumber));
+  async cancelBooking() {
+    const bookingDoc = await getDoc(
+      doc(
+        db,
+        'tourGroups',
+        this.data.cachedTourID,
+        'bookings',
+        this.data.cachedBooking
+      )
+    );
     if (!bookingDoc.exists()) return;
     const { tourId, pax } = bookingDoc.data();
-    await updateDoc(doc(db, 'slotsLeft', 'slotsLeft'), {
+    await updateDoc(doc(db, 'tourGroups', 'slotsLeft'), {
       [tourId]: increment(pax),
     });
-    await deleteDoc(doc(db, 'bookings', phoneNumber));
+    await deleteDoc(
+      doc(
+        db,
+        'tourGroups',
+        this.data.cachedTourID,
+        'bookings',
+        this.data.cachedBooking
+      )
+    );
+    this.data.cachedTourID = null;
+    this.data.cachedBooking = null;
   },
 
   async reinitialiseTours() {
     const timings = [
-      900, 910, 920, 930, 940, 950, 1000, 1010, 1020, 1030, 1040, 1050, 1100,
-      1110,
+      900, 915, 930, 945, 1000, 1015, 1030, 1045, 1100, 1115, 1130, 1145,
       //
-      1120, 1130, 1140, 1150, 1200, 1210, 1220, 1230, 1240, 1250, 1300, 1310,
-      1320, 1330, 1340, 1350, 1400, 1410, 1420, 1430, 1440, 1450, 1500, 1510,
-      1520, 1530,
+      1200, 1210, 1220, 1230, 1240, 1250, 1300, 1310, 1320, 1330, 1340, 1350,
+      1400, 1410, 1420, 1430, 1440, 1450, 1500, 1510, 1520, 1530,
     ];
-    const routesBefore1110 = ['A', 'B1', 'B2', 'C1', 'C2', 'D1', 'D2'];
-    const routesAfter1110 = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2', 'D1', 'D2'];
+    const routesBefore1200 = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+    const routesAfter1200 = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 
     const slotsLeftData = {};
     for (const timing of timings) {
-      for (const route of timing <= 1110 ? routesBefore1110 : routesAfter1110) {
-        slotsLeftData[timing + '_' + route] = 12;
+      for (const route of timing < 1200 ? routesBefore1200 : routesAfter1200) {
+        const slot = timing + '_' + route;
+        slotsLeftData[slot] = 12;
+        const emptyData = {};
+        await setDoc(doc(db, 'tourGroups', slot), emptyData);
       }
     }
-    await setDoc(doc(db, 'slotsLeft', 'slotsLeft'), slotsLeftData);
+    await setDoc(doc(db, 'tourGroups', 'slotsLeft'), slotsLeftData);
+    this.addBookingCollection();
+  },
+
+  async addBookingCollection() {
+    const timings = [
+      900, 915, 930, 945, 1000, 1015, 1030, 1045, 1100, 1115, 1130, 1145,
+      //
+      1200, 1210, 1220, 1230, 1240, 1250, 1300, 1310, 1320, 1330, 1340, 1350,
+      1400, 1410, 1420, 1430, 1440, 1450, 1500, 1510, 1520, 1530,
+    ];
+    const routesBefore1200 = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+    const routesAfter1200 = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+
+    const slotsLeftData = {};
+    for (const timing of timings) {
+      for (const route of timing < 1200 ? routesBefore1200 : routesAfter1200) {
+        const slot = timing + '_' + route;
+        const docRef = doc(db, 'tourGroups', slot);
+        const colRef = collection(docRef, 'bookings');
+        addDoc(colRef, {});
+      }
+    }
   },
 };
