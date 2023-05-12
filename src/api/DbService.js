@@ -1,4 +1,3 @@
-import { SlotFlags } from '@vue/shared';
 import { initializeApp } from 'firebase/app';
 import {
   getFirestore,
@@ -28,12 +27,10 @@ const db = getFirestore(app);
 export default {
   data: {
     cachedTours: null,
-    cachedTourID: null,
-    cachedBooking: null,
   },
 
   async getAllTours() {
-    const toursDoc = await getDoc(doc(db, 'tourGroups', 'slotsLeft'));
+    const toursDoc = await getDoc(doc(db, 'slotsLeft', 'slotsLeft'));
     this.data.cachedTours = toursDoc.data();
     return this.data.cachedTours;
   },
@@ -56,47 +53,26 @@ export default {
   },
 
   async submitBooking(tourId, name, pax) {
-    const [timing, route] = tourId.split('_');
-    const docRef = await addDoc(
-      collection(db, 'tourGroups', tourId, 'bookings'),
-      {
-        name,
-        pax,
-      }
-    );
-    await updateDoc(doc(db, 'tourGroups', 'slotsLeft'), {
+    const doc = await addDoc(collection(db, 'tourGroups', tourId, 'bookings'), {
+      name,
+      pax,
+    });
+    await updateDoc(doc(db, 'slotsLeft', 'slotsLeft'), {
       [tourId]: increment(-pax),
     });
-    this.data.cachedTourID = tourId;
-    this.data.cachedBooking = docRef.id;
+    return doc.id;
   },
 
-  async cancelBooking() {
+  async cancelBooking(tourId, bookingId) {
     const bookingDoc = await getDoc(
-      doc(
-        db,
-        'tourGroups',
-        this.data.cachedTourID,
-        'bookings',
-        this.data.cachedBooking
-      )
+      doc(db, 'tourGroups', tourId, 'bookings', bookingId)
     );
     if (!bookingDoc.exists()) return;
-    const { tourId, pax } = bookingDoc.data();
-    await updateDoc(doc(db, 'tourGroups', 'slotsLeft'), {
+    const { pax } = bookingDoc.data();
+    await updateDoc(doc(db, 'slotsLeft', 'slotsLeft'), {
       [tourId]: increment(pax),
     });
-    await deleteDoc(
-      doc(
-        db,
-        'tourGroups',
-        this.data.cachedTourID,
-        'bookings',
-        this.data.cachedBooking
-      )
-    );
-    this.data.cachedTourID = null;
-    this.data.cachedBooking = null;
+    await deleteDoc(bookingDoc.ref);
   },
 
   async reinitialiseTours() {
@@ -118,28 +94,7 @@ export default {
         await setDoc(doc(db, 'tourGroups', slot), emptyData);
       }
     }
-    await setDoc(doc(db, 'tourGroups', 'slotsLeft'), slotsLeftData);
+    await setDoc(doc(db, 'slotsLeft', 'slotsLeft'), slotsLeftData);
     this.addBookingCollection();
-  },
-
-  async addBookingCollection() {
-    const timings = [
-      900, 915, 930, 945, 1000, 1015, 1030, 1045, 1100, 1115, 1130, 1145,
-      //
-      1200, 1210, 1220, 1230, 1240, 1250, 1300, 1310, 1320, 1330, 1340, 1350,
-      1400, 1410, 1420, 1430, 1440, 1450, 1500, 1510, 1520, 1530,
-    ];
-    const routesBefore1200 = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
-    const routesAfter1200 = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
-
-    const slotsLeftData = {};
-    for (const timing of timings) {
-      for (const route of timing < 1200 ? routesBefore1200 : routesAfter1200) {
-        const slot = timing + '_' + route;
-        const docRef = doc(db, 'tourGroups', slot);
-        const colRef = collection(docRef, 'bookings');
-        addDoc(colRef, {});
-      }
-    }
   },
 };

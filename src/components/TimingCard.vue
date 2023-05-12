@@ -46,7 +46,7 @@ export default {
   }
 
   .subtitle {
-    color: rgba(#fff, 0.8);
+    color: rgba(#fff, 0.6);
     font-size: 12px;
   }
 }
