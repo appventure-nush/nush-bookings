@@ -76,24 +76,34 @@ export default {
       const slotsRemaining = await DbService.getAllTours();
 
       const possibleGroups = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+      var highestSlotTourId;
+      var highestSlots = 0;
       for (const group of possibleGroups) {
         const tourId = this.booking.selectedTiming + '_' + group;
         if (slotsRemaining[tourId] >= this.booking.numPpl) {
+          if (slotsRemaining[tourId] > highestSlots) {
+            highestSlots = slotsRemaining[tourId];
+            highestSlotTourId = tourId;
+            if (highestSlots == 12) break;
+          }
           // finish booking here
-          const bookingId = await DbService.submitBooking(
-            tourId,
-            this.name,
-            parseInt(this.booking.numPpl)
-          );
-          localStorage.setItem('bookingId', bookingId);
-          localStorage.setItem('tourId', tourId);
-
-          // watch animation for 2 seconds
-          await new Promise((r) => setTimeout(r, 2000));
-
-          this.$router.push('/booking-pass');
-          return;
         }
+      }
+
+      if (typeof highestSlotTourId !== 'undefined') {
+        const bookingId = await DbService.submitBooking(
+          highestSlotTourId,
+          this.name,
+          parseInt(this.booking.numPpl)
+        );
+        localStorage.setItem('bookingId', bookingId);
+        localStorage.setItem('tourId', highestSlotTourId);
+
+        // watch animation for 2 seconds
+        await new Promise((r) => setTimeout(r, 2000));
+
+        this.$router.push('/booking-pass');
+        return;
       }
 
       this.$router.push('/slots-taken');
