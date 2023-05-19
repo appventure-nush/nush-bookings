@@ -54,6 +54,9 @@ export default {
   },
 
   async submitBooking(tourId, name, pax) {
+    await updateDoc(doc(db, 'slotsLeft', 'slotsLeft'), {
+      [tourId]: increment(-pax),
+    });
     const bookingDoc = await addDoc(
       collection(db, 'tourGroups', tourId, 'bookings'),
       {
@@ -62,9 +65,6 @@ export default {
         timestamp: serverTimestamp(),
       }
     );
-    await updateDoc(doc(db, 'slotsLeft', 'slotsLeft'), {
-      [tourId]: increment(-pax),
-    });
     return bookingDoc.id;
   },
 
@@ -100,6 +100,5 @@ export default {
       }
     }
     await setDoc(doc(db, 'slotsLeft', 'slotsLeft'), slotsLeftData);
-    this.addBookingCollection();
   },
 };
