@@ -8,12 +8,12 @@
       v-model="name"
       :error="invalidName ? 'Enter a valid name' : null"
     />
-    <div id="recaptcha-container"></div>
+    <!-- <div id="recaptcha-container"></div> -->
     <div class="spacer"></div>
     <Steps
       :numSteps="3"
       :currentStep="3"
-      :canContinue="completedCaptcha"
+      :canContinue="name.length > 0"
       @continue="submit"
     />
   </div>
@@ -25,13 +25,13 @@
 
 <script>
 import { useRouter } from 'vue-router';
-import { getAuth, RecaptchaVerifier } from 'firebase/auth';
+// import { getAuth, RecaptchaVerifier } from 'firebase/auth';
 import TextField from '../components/TextField.vue';
 import Steps from '@/components/Steps.vue';
 import Loading from '@/components/Loading.vue';
 import DbService from '../api/DbService';
 
-const auth = getAuth();
+// const auth = getAuth();
 
 export default {
   components: { TextField, Steps, Loading },
@@ -39,7 +39,7 @@ export default {
     return {
       booking: {},
       name: '',
-      completedCaptcha: false,
+      // completedCaptcha: false,
       invalidName: false,
       isProcessing: false,
       // verifier: null,
@@ -59,14 +59,14 @@ export default {
   },
   mounted() {
     // initialize recaptcha
-    window.verifier = new RecaptchaVerifier(
-      'recaptcha-container',
-      {
-        callback: () => (this.completedCaptcha = true),
-      },
-      auth
-    );
-    window.verifier.render();
+    // window.verifier = new RecaptchaVerifier(
+    //   'recaptcha-container',
+    //   {
+    //     callback: () => (this.completedCaptcha = true),
+    //   },
+    //   auth
+    // );
+    // window.verifier.render();
   },
   methods: {
     async submit() {
