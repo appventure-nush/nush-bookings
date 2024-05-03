@@ -83,7 +83,7 @@ export default {
       const afternoonSlots = {};
       for (const [tourId, numSlots] of Object.entries(allTours)) {
         const timing = parseInt(tourId.split('_')[0]);
-        if (timing < currentTime) continue;
+        // if (timing < currentTime) continue;
         if (numSlots <= 0) continue;
         const list = timing < 1200 ? morningSlots : afternoonSlots;
         list[timing] = Math.max(list[timing] ?? 0, numSlots);
@@ -123,7 +123,7 @@ export default {
 
   h4 {
     margin-bottom: 18px;
-    font-size: 18px;
+    font-size: var(--bigger-text-size);
     font-weight: 700;
   }
 }

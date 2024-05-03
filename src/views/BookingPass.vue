@@ -23,7 +23,7 @@
       <span
         style="
           display: block;
-          font-size: 16px;
+          font-size: var(--smaller-text-size);
           font-weight: 500;
           margin-top: 60px;
         "
@@ -146,14 +146,14 @@ h1 {
 }
 
 h2 {
-  font-size: 20px;
+  font-size: var(--bigger-text-size);
   font-weight: 700;
   opacity: 0.8;
   margin-bottom: 14px;
 }
 
 .small-text {
-  font-size: 14px;
+  font-size: var(--smaller-text-size);
   font-weight: 500;
   opacity: 0.4;
 }
@@ -162,7 +162,7 @@ h2 {
   align-self: flex-start;
   background-color: rgba(#000, 0.1);
   padding: 14px 18px 13px 18px;
-  font-size: 14px;
+  font-size: var(--normal-text-size);
   font-weight: 700;
   border-radius: 8px;
   cursor: pointer;

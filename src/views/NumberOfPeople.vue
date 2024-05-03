@@ -100,7 +100,7 @@ export default {
 
   p {
     margin-bottom: 60px;
-    font-size: 16px;
+    font-size: var(--normal-text-size);
     font-weight: 500;
   }
 }

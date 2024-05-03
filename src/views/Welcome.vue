@@ -24,6 +24,8 @@
     </p>
     <div style="height: 50px"></div>
     <MyButton text="Sign up" :onClick="signUp" />
+    <div style="height: 4px"></div>
+    <OutlinedButton text="Toggle Font Size" :onClick="toggleFontSize" />
     <div class="spacer"></div>
     <span class="credits" @click="showDialog = true">
       By Jia Jie, Dave, Yong Tat, Sai, Teck Kong, Prannaya
@@ -35,20 +37,56 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import MyButton from '@/components/MyButton.vue';
+import OutlinedButton from '@/components/OutlinedButton.vue';
 import Dialog from '@/components/Dialog.vue';
 
 export default {
   components: {
     MyButton,
+    OutlinedButton,
     Dialog,
   },
   setup() {
     const router = useRouter();
     const showDialog = ref(false);
+
+    // This makes it such that when returning to this page, you have to press the button twice to change the font size back.
+    // I don't know how to fix it so I'll leave it here :skull:
+    const useBigFontSize = ref(false);
     function signUp() {
       router.push('/select-timing');
     }
-    return { showDialog, signUp };
+    function toggleFontSize() {
+      useBigFontSize.value = !useBigFontSize.value;
+      if (useBigFontSize.value) {
+        document.documentElement.style.setProperty(
+          '--normal-text-size',
+          '24px'
+        );
+        document.documentElement.style.setProperty(
+          '--smaller-text-size',
+          '18px'
+        );
+        document.documentElement.style.setProperty(
+          '--bigger-text-size',
+          '28px'
+        );
+      } else {
+        document.documentElement.style.setProperty(
+          '--normal-text-size',
+          '16px'
+        );
+        document.documentElement.style.setProperty(
+          '--smaller-text-size',
+          '14px'
+        );
+        document.documentElement.style.setProperty(
+          '--bigger-text-size',
+          '20px'
+        );
+      }
+    }
+    return { showDialog, signUp, toggleFontSize };
   },
 };
 </script>
@@ -78,13 +116,13 @@ export default {
 
   p {
     color: rgba(white, 0.8);
-    font-size: 16px;
+    font-size: var(--normal-text-size);
     font-weight: 500;
   }
 
   .credits {
     color: rgba(#fff, 0.4);
-    font-size: 14px;
+    font-size: var(--smaller-text-size);
     font-weight: 500;
   }
 }
