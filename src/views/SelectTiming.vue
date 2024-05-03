@@ -3,28 +3,33 @@
     <h1>Choose a time</h1>
     <div v-if="loading" class="loading">Fetching timeslots...</div>
     <div v-else class="column-scroll">
-      <h4 v-if="showMorning">Morning</h4>
-      <div v-if="showMorning" class="grid">
-        <TimingCard
-          v-for="[timing, numSlots] in morningSlots"
-          :key="timing"
-          :timing="timing"
-          :subtitle="`${numSlots} slots left`"
-          :selected="timing == sel"
-          @click="selectTiming(timing)"
-        />
+      <div v-if="!noSlots">
+        <h4 v-if="showMorning">Morning</h4>
+        <div v-if="showMorning" class="grid">
+          <TimingCard
+            v-for="[timing, numSlots] in morningSlots"
+            :key="timing"
+            :timing="timing"
+            :subtitle="`${numSlots} slots left`"
+            :selected="timing == sel"
+            @click="selectTiming(timing)"
+          />
+        </div>
+        <h4 style="margin-top: 32px">Afternoon</h4>
+        <div class="grid">
+          <TimingCard
+            v-for="[timing, numSlots] in afternoonSlots"
+            :key="timing"
+            :timing="timing - 1200"
+            :subtitle="`${numSlots} slots left`"
+            :selected="timing == sel"
+            @click="selectTiming(timing)"
+          />
+        </div>
       </div>
-      <h4 style="margin-top: 32px">Afternoon</h4>
-      <div class="grid">
-        <TimingCard
-          v-for="[timing, numSlots] in afternoonSlots"
-          :key="timing"
-          :timing="timing - 1200"
-          :subtitle="`${numSlots} slots left`"
-          :selected="timing == sel"
-          @click="selectTiming(timing)"
-        />
-      </div>
+      <h4 v-if="noSlots" style="margin-top: 32px">
+        It seems all slots are fully booked...
+      </h4>
     </div>
     <div style="margin-top: 30px">
       <Steps
@@ -52,6 +57,7 @@ export default {
       morningSlots: [],
       afternoonSlots: [],
       showMorning: false,
+      noSlots: false,
     };
   },
   setup() {
@@ -83,13 +89,19 @@ export default {
       const afternoonSlots = {};
       for (const [tourId, numSlots] of Object.entries(allTours)) {
         const timing = parseInt(tourId.split('_')[0]);
-        // if (timing < currentTime) continue;
+        if (timing < currentTime) continue;
         if (numSlots <= 0) continue;
         const list = timing < 1200 ? morningSlots : afternoonSlots;
         list[timing] = Math.max(list[timing] ?? 0, numSlots);
       }
+
+      this.noSlots =
+        Object.keys(morningSlots).length == 0 &&
+        Object.keys(afternoonSlots).length == 0;
+
       this.morningSlots = Object.entries(morningSlots);
       this.afternoonSlots = Object.entries(afternoonSlots);
+
       this.loading = false;
     },
   },
