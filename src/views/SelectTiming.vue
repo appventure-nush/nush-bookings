@@ -21,7 +21,7 @@
             v-for="[timing, numSlots] in afternoonSlots"
             :key="timing"
             :timing="timing - 1200"
-            :subtitle="`${numSlots} slots left`"
+            :subtitle="`${numSlots} pax left`"
             :selected="timing == sel"
             @click="selectTiming(timing)"
           />
