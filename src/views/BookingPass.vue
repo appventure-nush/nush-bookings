@@ -32,8 +32,8 @@
       </span>
     </h2>
     <span class="small-text">
-      Screenshot this page and show it to your tour guide. Please report 5
-      minutes early so the tour can start on time.
+      Screenshot this page and show it to your tour guide. Please report to the
+      <u>Event Horizon</u> 5 minutes early so the tour can start on time.
     </span>
     <div class="spacer"></div>
     <div class="cancel-btn" @click="showDialog = true">Cancel booking</div>

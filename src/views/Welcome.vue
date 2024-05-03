@@ -14,13 +14,14 @@
     <img src="@/assets/img/school_logo.png" height="54" width="100" />
     <h1>NUS High School Tour</h1>
     <p>
-      The tour will take roughly 30 minutes, giving you an overview of our
-      school's main facilities from the labs, to the lounge to the library.
+      The tour will start from the Event Horizon and take roughly 30 minutes,
+      giving you an overview of our school's main facilities from the labs to
+      the lounges.
     </p>
     <div style="height: 18px"></div>
     <p>
-      To let everyone have a chance to experience the tour, please do not sign
-      up for more than one timing.
+      It is <u>compulsory</u> to book for a tour. Please do not sign up for more
+      than one timing.
     </p>
     <div style="height: 50px"></div>
     <MyButton text="Sign up" :onClick="signUp" />
