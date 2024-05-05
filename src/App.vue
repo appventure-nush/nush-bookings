@@ -27,17 +27,17 @@
   src: url('./assets/fonts/AvenirLTStd-Heavy.otf') format('opentype');
 }
 
-:root {
+[data-fontsize='small'] {
   --normal-text-size: 16px;
   --smaller-text-size: 14px;
   --bigger-text-size: 20px;
 }
 
-// [data-fontsize="large"] {
-//   --normal-text-size: 24px
-//   --smaller-text-size: 18px
-//   --bigger-text-size: 28px
-// }
+[data-fontsize='large'] {
+  --normal-text-size: 24px;
+  --smaller-text-size: 18px;
+  --bigger-text-size: 28px;
+}
 
 * {
   margin: 0;

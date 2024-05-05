@@ -3,7 +3,10 @@
     <h1>Choose a time</h1>
     <div v-if="loading" class="loading">Fetching timeslots...</div>
     <div v-else class="column-scroll">
-      <div v-if="!noSlots">
+      <h4 v-if="noSlots" style="margin-top: 32px">
+        It seems no slots are available...
+      </h4>
+      <div v-else>
         <h4 v-if="showMorning">Morning</h4>
         <div v-if="showMorning" class="grid">
           <TimingCard
@@ -27,9 +30,6 @@
           />
         </div>
       </div>
-      <h4 v-if="noSlots" style="margin-top: 32px">
-        It seems all slots are fully booked...
-      </h4>
     </div>
     <div style="margin-top: 30px">
       <Steps

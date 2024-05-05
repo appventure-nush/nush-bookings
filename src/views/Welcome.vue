@@ -40,6 +40,7 @@ import { useRouter } from 'vue-router';
 import MyButton from '@/components/MyButton.vue';
 import OutlinedButton from '@/components/OutlinedButton.vue';
 import Dialog from '@/components/Dialog.vue';
+import { bigFontSize } from '@/states';
 
 export default {
   components: {
@@ -53,38 +54,15 @@ export default {
 
     // This makes it such that when returning to this page, you have to press the button twice to change the font size back.
     // I don't know how to fix it so I'll leave it here :skull:
-    const useBigFontSize = ref(false);
     function signUp() {
       router.push('/select-timing');
     }
     function toggleFontSize() {
-      useBigFontSize.value = !useBigFontSize.value;
-      if (useBigFontSize.value) {
-        document.documentElement.style.setProperty(
-          '--normal-text-size',
-          '24px'
-        );
-        document.documentElement.style.setProperty(
-          '--smaller-text-size',
-          '18px'
-        );
-        document.documentElement.style.setProperty(
-          '--bigger-text-size',
-          '28px'
-        );
+      bigFontSize.toggle();
+      if (bigFontSize.value) {
+        document.body.setAttribute('data-fontsize', 'large');
       } else {
-        document.documentElement.style.setProperty(
-          '--normal-text-size',
-          '16px'
-        );
-        document.documentElement.style.setProperty(
-          '--smaller-text-size',
-          '14px'
-        );
-        document.documentElement.style.setProperty(
-          '--bigger-text-size',
-          '20px'
-        );
+        document.body.setAttribute('data-fontsize', 'small');
       }
     }
     return { showDialog, signUp, toggleFontSize };
