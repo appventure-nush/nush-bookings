@@ -23,7 +23,7 @@
       <span
         style="
           display: block;
-          font-size: 16px;
+          font-size: var(--smaller-text-size);
           font-weight: 500;
           margin-top: 60px;
         "
@@ -32,8 +32,8 @@
       </span>
     </h2>
     <span class="small-text">
-      Screenshot this page and show it to your tour guide. Please report 5
-      minutes early so the tour can start on time.
+      Screenshot this page and show it to your tour guide. Please report to the
+      <u>Event Horizon</u> 5 minutes early so the tour can start on time.
     </span>
     <div class="spacer"></div>
     <div class="cancel-btn" @click="showDialog = true">Cancel booking</div>
@@ -146,14 +146,14 @@ h1 {
 }
 
 h2 {
-  font-size: 20px;
+  font-size: var(--bigger-text-size);
   font-weight: 700;
   opacity: 0.8;
   margin-bottom: 14px;
 }
 
 .small-text {
-  font-size: 14px;
+  font-size: var(--smaller-text-size);
   font-weight: 500;
   opacity: 0.4;
 }
@@ -162,7 +162,7 @@ h2 {
   align-self: flex-start;
   background-color: rgba(#000, 0.1);
   padding: 14px 18px 13px 18px;
-  font-size: 14px;
+  font-size: var(--normal-text-size);
   font-weight: 700;
   border-radius: 8px;
   cursor: pointer;

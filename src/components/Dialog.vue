@@ -43,13 +43,13 @@ export default {
   flex-direction: column;
 
   h1 {
-    font-size: 20px;
+    font-size: var(--bigger-text-size);
     font-weight: 700;
     margin-bottom: 12px;
   }
 
   p {
-    font-size: 16px;
+    font-size: var(--normal-text-size);
     font-weight: 500;
     margin-bottom: 28px;
   }
@@ -65,7 +65,7 @@ export default {
     height: 36px;
     display: grid;
     place-items: center;
-    font-size: 16px;
+    font-size: var(--normal-text-size);
     font-weight: 700;
     cursor: pointer;
     user-select: none;

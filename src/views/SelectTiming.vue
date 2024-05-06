@@ -3,27 +3,32 @@
     <h1>Choose a time</h1>
     <div v-if="loading" class="loading">Fetching timeslots...</div>
     <div v-else class="column-scroll">
-      <h4 v-if="showMorning">Morning</h4>
-      <div v-if="showMorning" class="grid">
-        <TimingCard
-          v-for="[timing, numSlots] in morningSlots"
-          :key="timing"
-          :timing="timing"
-          :subtitle="`${numSlots} slots left`"
-          :selected="timing == sel"
-          @click="selectTiming(timing)"
-        />
-      </div>
-      <h4 style="margin-top: 32px">Afternoon</h4>
-      <div class="grid">
-        <TimingCard
-          v-for="[timing, numSlots] in afternoonSlots"
-          :key="timing"
-          :timing="timing - 1200"
-          :subtitle="`${numSlots} slots left`"
-          :selected="timing == sel"
-          @click="selectTiming(timing)"
-        />
+      <h4 v-if="noSlots" style="margin-top: 32px">
+        It seems no slots are available...
+      </h4>
+      <div v-else>
+        <h4 v-if="showMorning">Morning</h4>
+        <div v-if="showMorning" class="grid">
+          <TimingCard
+            v-for="[timing, numSlots] in morningSlots"
+            :key="timing"
+            :timing="timing"
+            :subtitle="`${numSlots} pax left`"
+            :selected="timing == sel"
+            @click="selectTiming(timing)"
+          />
+        </div>
+        <h4 style="margin-top: 32px">Afternoon</h4>
+        <div class="grid">
+          <TimingCard
+            v-for="[timing, numSlots] in afternoonSlots"
+            :key="timing"
+            :timing="timing - 1200"
+            :subtitle="`${numSlots} pax left`"
+            :selected="timing == sel"
+            @click="selectTiming(timing)"
+          />
+        </div>
       </div>
     </div>
     <div style="margin-top: 30px">
@@ -52,6 +57,7 @@ export default {
       morningSlots: [],
       afternoonSlots: [],
       showMorning: false,
+      noSlots: false,
     };
   },
   setup() {
@@ -88,8 +94,14 @@ export default {
         const list = timing < 1200 ? morningSlots : afternoonSlots;
         list[timing] = Math.max(list[timing] ?? 0, numSlots);
       }
+
+      this.noSlots =
+        Object.keys(morningSlots).length == 0 &&
+        Object.keys(afternoonSlots).length == 0;
+
       this.morningSlots = Object.entries(morningSlots);
       this.afternoonSlots = Object.entries(afternoonSlots);
+
       this.loading = false;
     },
   },
@@ -123,7 +135,7 @@ export default {
 
   h4 {
     margin-bottom: 18px;
-    font-size: 18px;
+    font-size: var(--bigger-text-size);
     font-weight: 700;
   }
 }

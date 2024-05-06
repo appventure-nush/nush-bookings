@@ -14,16 +14,19 @@
     <img src="@/assets/img/school_logo.png" height="54" width="100" />
     <h1>NUS High School Tour</h1>
     <p>
-      The tour will take roughly 30 minutes, giving you an overview of our
-      school's main facilities from the labs, to the lounge to the library.
+      The tour will start from the Event Horizon and take roughly 30 minutes,
+      giving you an overview of our school's main facilities from the labs to
+      the lounges.
     </p>
     <div style="height: 18px"></div>
     <p>
-      To let everyone have a chance to experience the tour, please do not sign
-      up for more than one timing.
+      It is <u>compulsory</u> to book for a tour. Please do not sign up for more
+      than one timing.
     </p>
     <div style="height: 50px"></div>
     <MyButton text="Sign up" :onClick="signUp" />
+    <div style="height: 4px"></div>
+    <OutlinedButton text="Toggle Font Size" :onClick="toggleFontSize" />
     <div class="spacer"></div>
     <span class="credits" @click="showDialog = true">
       By Jia Jie, Dave, Yong Tat, Sai, Teck Kong, Prannaya
@@ -35,20 +38,32 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import MyButton from '@/components/MyButton.vue';
+import OutlinedButton from '@/components/OutlinedButton.vue';
 import Dialog from '@/components/Dialog.vue';
+import { bigFontSize } from '@/states';
 
 export default {
   components: {
     MyButton,
+    OutlinedButton,
     Dialog,
   },
   setup() {
     const router = useRouter();
     const showDialog = ref(false);
+
     function signUp() {
       router.push('/select-timing');
     }
-    return { showDialog, signUp };
+    function toggleFontSize() {
+      bigFontSize.toggle();
+      if (bigFontSize.value) {
+        document.body.setAttribute('data-fontsize', 'large');
+      } else {
+        document.body.setAttribute('data-fontsize', 'small');
+      }
+    }
+    return { showDialog, signUp, toggleFontSize };
   },
 };
 </script>
@@ -78,13 +93,13 @@ export default {
 
   p {
     color: rgba(white, 0.8);
-    font-size: 16px;
+    font-size: var(--normal-text-size);
     font-weight: 500;
   }
 
   .credits {
     color: rgba(#fff, 0.4);
-    font-size: 14px;
+    font-size: var(--smaller-text-size);
     font-weight: 500;
   }
 }

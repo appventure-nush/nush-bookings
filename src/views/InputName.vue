@@ -136,7 +136,7 @@ export default {
 
   p {
     margin-bottom: 36px;
-    font-size: 16px;
+    font-size: var(--normal-text-size);
     font-weight: 500;
   }
 }
