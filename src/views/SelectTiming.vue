@@ -92,7 +92,7 @@ export default {
         if (timing < currentTime) continue;
         if (numSlots <= 0) continue;
         const list = timing < 1200 ? morningSlots : afternoonSlots;
-        list[timing] = Math.max(list[timing] ?? 0, numSlots);
+        list[timing] = (list[timing] ?? 0) + numSlots;
       }
 
       this.noSlots =

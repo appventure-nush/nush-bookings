@@ -14,9 +14,9 @@
     <img src="@/assets/img/school_logo.png" height="54" width="100" />
     <h1>NUS High School Tour</h1>
     <p>
-      The tour will start from the Event Horizon and take roughly 30 minutes,
-      giving you an overview of our school's main facilities from the labs to
-      the lounges.
+      The tour will start from the <u>front of the canteen</u> (near the library
+      entrance) and take roughly 30 minutes, giving you an overview of our
+      school's main facilities.
     </p>
     <div style="height: 18px"></div>
     <p>
