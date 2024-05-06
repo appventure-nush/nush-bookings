@@ -52,8 +52,6 @@ export default {
     const router = useRouter();
     const showDialog = ref(false);
 
-    // This makes it such that when returning to this page, you have to press the button twice to change the font size back.
-    // I don't know how to fix it so I'll leave it here :skull:
     function signUp() {
       router.push('/select-timing');
     }
