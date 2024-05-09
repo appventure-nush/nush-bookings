@@ -33,8 +33,7 @@
     </h2>
     <span class="small-text">
       Screenshot this page and show it to your tour guide. Please report to the
-      <u>front of the canteen</u> (near the library entrance) 5 minutes early so
-      the tour can start on time.
+      <u>{{ startLocation }}</u> 5 minutes early so the tour can start on time.
     </span>
     <div class="spacer"></div>
     <div class="cancel-btn" @click="showDialog = true">Cancel booking</div>
@@ -78,6 +77,18 @@ export default {
           return 'yellow';
         default:
           throw 'Invalid route';
+      }
+    },
+    startLocation() {
+      switch (this.groupId[0]) {
+        case 'A':
+          return 'Amphitheatre (L1)';
+        case 'B':
+          return 'front of the canteen (L1)';
+        case 'C':
+          return 'front of the canteen (L1)';
+        default:
+          throw '<INVALID VALUE>';
       }
     },
   },
