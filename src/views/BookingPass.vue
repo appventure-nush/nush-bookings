@@ -70,11 +70,11 @@ export default {
         case 'A':
           return 'red';
         case 'B':
-          return 'blue';
-        case 'C':
-          return 'green';
-        case 'D':
           return 'yellow';
+        case 'C':
+          return 'blue';
+        case 'D':
+          return 'green';
         default:
           throw 'Invalid route';
       }
