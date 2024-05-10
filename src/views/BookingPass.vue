@@ -23,7 +23,7 @@
       <span
         style="
           display: block;
-          font-size: var(--smaller-text-size);
+          font-size: var(--normal-text-size);
           font-weight: 500;
           margin-top: 60px;
         "
@@ -70,11 +70,11 @@ export default {
         case 'A':
           return 'red';
         case 'B':
-          return 'blue';
-        case 'C':
-          return 'green';
-        case 'D':
           return 'yellow';
+        case 'C':
+          return 'blue';
+        case 'D':
+          return 'green';
         default:
           throw 'Invalid route';
       }

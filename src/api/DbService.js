@@ -81,11 +81,12 @@ export default {
   },
 
   async reinitialiseTours() {
+    console.log('resetting!');
     const timings = [
       900, 915, 930, 945, 1000, 1015, 1030, 1045, 1100, 1115, 1130, 1145,
       //
       1200, 1210, 1220, 1230, 1240, 1250, 1300, 1310, 1320, 1330, 1340, 1350,
-      1400, 1410, 1420, 1430, 1440, 1450, 1500, 1510, 1520, 1530,
+      1400, 1410, 1420, 1430,
     ];
     const groupsBefore1200 = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
     const groupsAfter1200 = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
@@ -96,9 +97,11 @@ export default {
         const slot = timing + '_' + group;
         slotsLeftData[slot] = 12;
         const emptyData = {};
+        console.log(slot);
         await setDoc(doc(db, 'tourGroups', slot), emptyData);
       }
     }
     await setDoc(doc(db, 'slotsLeft', 'slotsLeft'), slotsLeftData);
+    console.log('done!');
   },
 };
