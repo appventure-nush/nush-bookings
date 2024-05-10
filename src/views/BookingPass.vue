@@ -23,7 +23,7 @@
       <span
         style="
           display: block;
-          font-size: var(--smaller-text-size);
+          font-size: var(--normal-text-size);
           font-weight: 500;
           margin-top: 60px;
         "
