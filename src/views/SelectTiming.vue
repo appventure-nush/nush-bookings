@@ -30,6 +30,9 @@
           />
         </div>
       </div>
+      <p style="margin-top: 32px">
+        Please note that you are only able to book slots 30 minutes in advance!
+      </p>
     </div>
     <div style="margin-top: 30px">
       <Steps
@@ -80,7 +83,10 @@ export default {
       this.loading = true;
 
       const now = new Date();
+      const thirtyMinutesLater = new Date(now.getTime() + 30 * 60 * 1000);
       const currentTime = now.getHours() * 100 + now.getMinutes();
+      const thirtyMinutesLaterTime =
+        thirtyMinutesLater.getHours() * 100 + thirtyMinutesLater.getMinutes();
       this.showMorning = currentTime < 1200;
 
       const allTours = await DbService.getAllTours();
@@ -90,6 +96,7 @@ export default {
       for (const [tourId, numSlots] of Object.entries(allTours)) {
         const timing = parseInt(tourId.split('_')[0]);
         if (timing < currentTime) continue;
+        if (timing > thirtyMinutesLaterTime) continue;
         if (numSlots <= 0) continue;
         const list = timing < 1200 ? morningSlots : afternoonSlots;
         list[timing] = (list[timing] ?? 0) + numSlots;
@@ -137,6 +144,12 @@ export default {
     margin-bottom: 18px;
     font-size: var(--bigger-text-size);
     font-weight: 700;
+  }
+
+  p {
+    color: rgba(white, 0.8);
+    font-size: var(--normal-text-size);
+    font-weight: 500;
   }
 }
 
