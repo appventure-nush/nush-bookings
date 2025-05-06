@@ -83,11 +83,11 @@ export default {
     startLocation() {
       switch (this.groupId[0]) {
         case 'A':
-          return 'the Amphitheatre (L1)';
+          return 'the CLOUD (L1, near back gate)';
         case 'B':
-          return 'the front of the canteen (L1)';
+          return 'the CLOUD (L1, near back gate)';
         case 'C':
-          return 'outside the bookshop (L1)';
+          return 'the front of the canteen (L1, near cafe)';
         default:
           throw '<INVALID VALUE>';
       }
