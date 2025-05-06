@@ -45,7 +45,6 @@
 import Dialog from '../components/Dialog.vue';
 import DbService from '../api/DbService';
 import { formatTiming } from '../utils/formatTiming';
-import { getTourLocation } from '../utils/tourLocation';
 
 export default {
   components: {
