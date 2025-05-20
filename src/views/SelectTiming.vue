@@ -83,12 +83,13 @@ export default {
       this.loading = true;
 
       const now = new Date();
-      const thirtyMinutesLater = new Date(now.getTime() + 30 * 60 * 1000);
+      const delayLater = new Date(now.getTime() + 45 * 60 * 1000);
       const currentTime = now.getHours() * 100 + now.getMinutes();
-      const thirtyMinutesLaterTime =
-        thirtyMinutesLater.getHours() * 100 + thirtyMinutesLater.getMinutes();
+      const delayLaterTime =
+        delayLater.getHours() * 100 + delayLater.getMinutes();
       this.showMorning = currentTime < 1200;
 
+      // await DbService.reinitialiseTours();
       const allTours = await DbService.getAllTours();
 
       const morningSlots = {};
@@ -96,7 +97,7 @@ export default {
       for (const [tourId, numSlots] of Object.entries(allTours)) {
         const timing = parseInt(tourId.split('_')[0]);
         if (timing < currentTime) continue;
-        if (timing > thirtyMinutesLaterTime) continue;
+        if (timing > delayLaterTime) continue;
         if (numSlots <= 0) continue;
         const list = timing < 1200 ? morningSlots : afternoonSlots;
         list[timing] = (list[timing] ?? 0) + numSlots;
