@@ -80,6 +80,7 @@ export default {
       var highestSlots = 0;
       for (const group of possibleGroups) {
         const tourId = this.booking.selectedTiming + '_' + group;
+        if (this.booking.selectedTiming == 1030 && group == 'C2') continue;
         if (slotsRemaining[tourId] >= this.booking.numPpl) {
           if (slotsRemaining[tourId] > highestSlots) {
             highestSlots = slotsRemaining[tourId];
