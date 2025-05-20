@@ -155,6 +155,7 @@ h1 {
   font-size: 32px;
   font-weight: 700;
   margin-bottom: 14px;
+  mix-blend-mode: difference;
 }
 
 h2 {
@@ -162,12 +163,14 @@ h2 {
   font-weight: 700;
   opacity: 0.8;
   margin-bottom: 14px;
+  mix-blend-mode: difference;
 }
 
 .small-text {
   font-size: var(--smaller-text-size);
   font-weight: 500;
-  opacity: 0.4;
+  opacity: 0.6;
+  mix-blend-mode: difference;
 }
 
 .cancel-btn {
