@@ -4,8 +4,9 @@
       v-if="showDialog"
       title="About"
       message="This site was built by a team of Year 4 to 6 students in NUS High School,
-      composed of Lee Jia Jie, Tan Kai Xun Dave, Tan Yong Tat, Dedeep Sai Vadapalli, Lim Teck Kong and Prannaya
-      Gupta, with support from the NUS High Students' Council and AppVenture,
+      composed of Lee Jia Jie, Tan Kai Xun Dave, Tan Yong Tat, Dedeep Sai Vadapalli, 
+      Lim Teck Kong and Prannaya Gupta, and maintained by Wong Yue Heng and Yu Simu, 
+      with support from the NUS High Students' Council and AppVenture, 
       the Computer Science Interest Group of NUS High."
       @close="showDialog = false"
     />
@@ -20,8 +21,10 @@
     </p>
     <div style="height: 18px"></div>
     <p>
-      It is <u>compulsory</u> to book for a tour. Please do not sign up for more
-      than one timing.
+      Please register for a timeslot to be able to attend a tour. To ensure more
+      people get a chance to attend a tour, please do not sign up for more than
+      one timeslot. Each booking can accommodate at most 4 people. If you have
+      more than 4 people, please make multiple bookings.
     </p>
     <div style="height: 50px"></div>
     <MyButton text="Sign up" :onClick="signUp" />
@@ -29,7 +32,8 @@
     <OutlinedButton text="Toggle Font Size" :onClick="toggleFontSize" />
     <div class="spacer"></div>
     <span class="credits" @click="showDialog = true">
-      By Jia Jie, Dave, Yong Tat, Sai, Teck Kong, Prannaya
+      By Jia Jie, Dave, Yong Tat, Sai, Teck Kong, Prannaya; maintained by Yue
+      Heng, Simu
     </span>
   </div>
 </template>

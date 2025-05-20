@@ -160,14 +160,14 @@ h1 {
 h2 {
   font-size: var(--bigger-text-size);
   font-weight: 700;
-  opacity: 0.8;
+  opacity: 1;
   margin-bottom: 14px;
 }
 
 .small-text {
   font-size: var(--smaller-text-size);
   font-weight: 500;
-  opacity: 0.4;
+  opacity: 1;
 }
 
 .cancel-btn {
