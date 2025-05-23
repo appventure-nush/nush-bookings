@@ -34,7 +34,7 @@ export default {
   cursor: pointer;
   user-select: none;
 
-  color: rgba(white, 0.8);
+  color: rgba(white, 0.9);
   font-size: 24px;
   font-weight: 700;
   transition: background-color 200ms ease-in-out;

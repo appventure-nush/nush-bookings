@@ -43,14 +43,14 @@ export default {
   flex-grow: 1;
 
   .title {
-    color: rgba(#fff, 0.8);
+    color: rgba(#fff, 0.9);
     font-size: 18px;
     font-weight: 700;
   }
 
   .subtitle,
   .subtitle2 {
-    color: rgba(#fff, 0.8);
+    color: rgba(#fff, 0.9);
     font-size: 12px;
   }
 

@@ -40,14 +40,14 @@ export default {
   }
 
   .timing {
-    color: rgba(#fff, 0.8);
+    color: rgba(#fff, 0.9);
     font-size: var(--normal-text-size);
     font-weight: 700;
     margin-bottom: 4px;
   }
 
   .subtitle {
-    color: rgba(#fff, 0.6);
+    color: rgba(#fff, 0.8);
     font-size: var(--smaller-text-size);
   }
 }

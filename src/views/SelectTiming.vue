@@ -96,7 +96,7 @@ export default {
       const afternoonSlots = {};
       for (const [tourId, numSlots] of Object.entries(allTours)) {
         const timing = parseInt(tourId.split('_')[0]);
-        if (timing < currentTime) continue;
+        //if (timing < currentTime) continue;
         if (timing > delayLaterTime) continue;
         if (numSlots <= 0) continue;
         const list = timing < 1200 ? morningSlots : afternoonSlots;
@@ -148,7 +148,7 @@ export default {
   }
 
   p {
-    color: rgba(white, 0.8);
+    color: rgba(white, 0.9);
     font-size: var(--normal-text-size);
     font-weight: 500;
   }

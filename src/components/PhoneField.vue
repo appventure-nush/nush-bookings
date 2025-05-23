@@ -39,7 +39,7 @@ export default {
   }
 
   .country-code {
-    color: rgba(#fff, 0.6);
+    color: rgba(#fff, 0.9);
     font-size: 20px;
     font-weight: 700;
     margin-right: 10px;

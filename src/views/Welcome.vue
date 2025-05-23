@@ -15,16 +15,14 @@
     <img src="@/assets/img/school_logo.png" height="54" width="100" />
     <h1>NUS High School Tour</h1>
     <p>
-      The tour will start from various locations around the school and take
-      roughly 30 minutes, giving you an overview of our school's main
-      facilities.
+      The tour will take about 30 minutes, giving you an overview of our
+      school's facilities.
     </p>
     <div style="height: 18px"></div>
     <p>
-      Please register for a timeslot to be able to attend a tour. To ensure more
-      people get a chance to attend a tour, please do not sign up for more than
-      one timeslot. Each booking can accommodate at most 4 people. If you have
-      more than 4 people, please make multiple bookings.
+      Please register for a timeslot to attend a tour. Each booking can
+      accommodate up to 4 persons and you can only book up to 45 minutes before
+      the tour. Please make multiple bookings if you have more than 4 people.
     </p>
     <div style="height: 50px"></div>
     <MyButton text="Sign up" :onClick="signUp" />
@@ -96,13 +94,13 @@ export default {
   }
 
   p {
-    color: rgba(white, 0.8);
+    color: rgba(white, 0.9);
     font-size: var(--normal-text-size);
     font-weight: 500;
   }
 
   .credits {
-    color: rgba(#fff, 0.4);
+    color: rgba(#fff, 0.9);
     font-size: var(--smaller-text-size);
     font-weight: 500;
   }
