@@ -45,7 +45,7 @@ export default {
   display: grid;
   place-items: center;
   border-radius: 14px;
-  color: rgba(white, 0.8);
+  color: rgba(white, 0.9);
   font-size: 18px;
   font-weight: 700;
   user-select: none;
@@ -53,6 +53,6 @@ export default {
 
   border-style: solid;
   border-width: 1px;
-  border-color: rgba(white, 0.8);
+  border-color: rgba(white, 0.9);
 }
 </style>

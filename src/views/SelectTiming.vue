@@ -31,7 +31,8 @@
         </div>
       </div>
       <p style="margin-top: 32px">
-        Please note that you are only able to book slots 30 minutes in advance!
+        Please note that you are only able to book slots up to 45 minutes in
+        advance!
       </p>
     </div>
     <div style="margin-top: 30px">
@@ -148,7 +149,7 @@ export default {
   }
 
   p {
-    color: rgba(white, 0.8);
+    color: rgba(white, 0.9);
     font-size: var(--normal-text-size);
     font-weight: 500;
   }

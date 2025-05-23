@@ -34,7 +34,7 @@
     <span class="small-text">
       Screenshot this page and show it to your tour guide. Please report to
       <u>{{ startLocation }}</u> 5 minutes early so the tour can start on time.
-      Look out for the <u>{{ routeColor }}</u> column there!
+      Look out for the <u>{{ routeColor }}</u> balloons there!
     </span>
     <div class="spacer"></div>
     <div class="cancel-btn" @click="showDialog = true">Cancel booking</div>
