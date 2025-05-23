@@ -31,7 +31,8 @@
         </div>
       </div>
       <p style="margin-top: 32px">
-        Please note that you are only able to book slots 30 minutes in advance!
+        Please note that you are only able to book slots up to 45 minutes in
+        advance!
       </p>
     </div>
     <div style="margin-top: 30px">
@@ -96,7 +97,7 @@ export default {
       const afternoonSlots = {};
       for (const [tourId, numSlots] of Object.entries(allTours)) {
         const timing = parseInt(tourId.split('_')[0]);
-        //if (timing < currentTime) continue;
+        if (timing < currentTime) continue;
         if (timing > delayLaterTime) continue;
         if (numSlots <= 0) continue;
         const list = timing < 1200 ? morningSlots : afternoonSlots;
