@@ -1,4 +1,9 @@
 <template>
+  <div v-if="showBanner" class="top-banner">
+    NOTE: Bookings will only be enabled on the actual day of Open House itself
+    (16 May)
+  </div>
+
   <Transition>
     <Dialog
       v-if="showDialog"
@@ -37,7 +42,7 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import MyButton from '@/components/MyButton.vue';
 import OutlinedButton from '@/components/OutlinedButton.vue';
@@ -53,6 +58,11 @@ export default {
   setup() {
     const router = useRouter();
     const showDialog = ref(false);
+    const cutoffDate = new Date('2026-05-16');
+
+    const showBanner = computed(() => {
+      return new Date() < cutoffDate;
+    });
 
     function signUp() {
       router.push('/select-timing');
@@ -65,7 +75,7 @@ export default {
         document.body.setAttribute('data-fontsize', 'small');
       }
     }
-    return { showDialog, signUp, toggleFontSize };
+    return { showDialog, signUp, toggleFontSize, showBanner };
   },
 };
 </script>
@@ -104,5 +114,13 @@ export default {
     font-size: var(--smaller-text-size);
     font-weight: 500;
   }
+}
+
+.top-banner {
+  background: #ffcc00;
+  color: #222;
+  padding: 12px;
+  text-align: center;
+  font-weight: bold;
 }
 </style>
