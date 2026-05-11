@@ -30,7 +30,7 @@
       the tour. Please make multiple bookings if you have more than 4 people.
     </p>
     <div style="height: 50px"></div>
-    <MyButton text="Sign up" :onClick="signUp" />
+    <MyButton text="Sign up" :onClick="signUp" :disabled="showBanner" />
     <div style="height: 4px"></div>
     <OutlinedButton text="Toggle Font Size" :onClick="toggleFontSize" />
     <div class="spacer"></div>
