@@ -29,6 +29,11 @@
       accommodate up to 4 persons and you can only book up to 45 minutes before
       the tour. Please make multiple bookings if you have more than 4 people.
     </p>
+    <div style="height: 18px"></div>
+    <p>
+      Do note that tours involve climbing of stairs. If you require assistance
+      please inform you guide before the start of the tour
+    </p>
     <div style="height: 50px"></div>
     <MyButton text="Sign up" :onClick="signUp" :disabled="showBanner" />
     <div style="height: 4px"></div>

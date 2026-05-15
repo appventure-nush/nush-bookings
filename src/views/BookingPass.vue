@@ -70,11 +70,9 @@ export default {
         case 'A':
           return 'red';
         case 'B':
-          return 'yellow';
+          return 'green';
         case 'C':
           return 'blue';
-        case 'D':
-          return 'green';
         default:
           throw 'Invalid route';
       }
@@ -82,9 +80,9 @@ export default {
     startLocation() {
       switch (this.groupId[0]) {
         case 'A':
-          return 'the Level 2 Staff Room';
+          return 'the Level 1 Arc (Canteen)';
         case 'B':
-          return 'the Level 2 College Counselling Area (outside Hall)';
+          return 'the Level 1 Arc (Canteen)';
         case 'C':
           return 'the Level 1 Arc (Canteen)';
         default:
