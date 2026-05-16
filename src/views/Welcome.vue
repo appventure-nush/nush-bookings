@@ -66,7 +66,7 @@ export default {
     //const cutoffDate = new Date('2026-05-16');
 
     const showBanner = computed(() => {
-      return true; //return new Date() < cutoffDate;
+      return false; //return new Date() < cutoffDate;
     });
 
     function signUp() {
