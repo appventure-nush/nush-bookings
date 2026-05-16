@@ -56,37 +56,17 @@ export default {
   },
   methods: {
     async checkSlots() {
-      const selectedTimingRaw = localStorage.getItem('selectedTiming');
-
-      if (!selectedTimingRaw) {
-        console.warn('No selectedTiming found in localStorage');
-        this.slotsFree = 4; // testing fallback
-        return;
-      }
-
-      const selectedTiming = String(Number(selectedTimingRaw)).padStart(4, '0');
-
-      console.log('selectedTimingRaw:', selectedTimingRaw);
-      console.log('selectedTiming DB key:', selectedTiming);
-
+      const selectedTiming = localStorage.getItem('selectedTiming');
       const allTours = await DbService.getAllToursCached();
       const possibleGroups = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
-
       let slotsFree = 0;
-
       for (const group of possibleGroups) {
-        const key = `${selectedTiming}_${group}`;
-        const remainingSlots = allTours[key];
-
-        console.log('checking:', key, remainingSlots);
-
+        const remainingSlots = allTours[selectedTiming + '_' + group];
         if (remainingSlots > slotsFree) {
           slotsFree = remainingSlots;
         }
-
         if (slotsFree >= 4) break;
       }
-
       this.slotsFree = Math.min(4, slotsFree);
     },
   },

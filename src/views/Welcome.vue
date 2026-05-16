@@ -63,10 +63,10 @@ export default {
   setup() {
     const router = useRouter();
     const showDialog = ref(false);
-    const cutoffDate = new Date('2026-05-16');
+    //const cutoffDate = new Date('2026-05-16');
 
     const showBanner = computed(() => {
-      return new Date() < cutoffDate;
+      return false; //return new Date() < cutoffDate;
     });
 
     function signUp() {
